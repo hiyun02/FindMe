@@ -7,7 +7,7 @@ import lombok.Builder;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public record WarnDTO(
-        String warnSeq, // Pk Seq
+        String PoliceSeq, // Pk Seq
         String occrde, // 발생일시
         String alldressingDscd, // 착의사항
         String ageNow, //현재나이
