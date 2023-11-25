@@ -22,6 +22,9 @@ public class MissController {
     public String missChg() {return "miss/missChg";}
     
     /*실종자 정보 등록하기*/
-    @GetMapping("/missReg")
+    @GetMapping("missReg")
     public String missReg() {return "miss/missReg";}
+
+    @GetMapping("missDetail")
+    public String missDetail(){return "miss/missDetail";}
 }

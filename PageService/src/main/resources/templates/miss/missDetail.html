@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords"
+          content="airbnb, booking, city guide, directory, events, hotel booking, listings, marketing, places, restaurant, restaurant">
+    <meta name="description" content="Guido - Directory & Listing HTML Template">
+    <meta name="CreativeLayers" content="ATFN">
+    <!-- css file -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Responsive stylesheet -->
+    <link rel="stylesheet" href="/css/responsive.css">
+    <!-- Title -->
+    <title>실종자 상세보기</title>
+    <!-- Favicon -->
+    <link href="/images/favicon.ico" sizes="128x128" rel="shortcut icon" type="image/x-icon"/>
+    <link href="/images/favicon.ico" sizes="128x128" rel="shortcut icon"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sf035zxjis"></script>
+    <script type="text/javascript"
+            src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sf035zxjis&submodules=panorama"></script>
+
+
+</head>
+<body>
+<div class="wrapper">
+    <div class="preloader"></div>
+    <!-- 헤더 파일 시작! -->
+    <th:block th:replace="header"></th:block>
+    <!-- 헤더 파일 종료! -->
+
+    <!-- Inner Page Breadcrumb -->
+    <section class="inner_page_breadcrumb">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-6">
+                    <div class="breadcrumb_content">
+                        <h2 class="breadcrumb_title">Sign in</h2>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Sign in</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <h1 style="text-align: center; padding-top: 5%">실종 아동 상세보기</h1>
+    <!-- Our Coming Soon Page -->
+    <section class="our-coming-soon" style="padding-top: 5%; padding-bottom: 0%;">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3">
+                    일반지도
+                    <div class="error_page footer_apps_widget text-center">
+                        <div id="map"></div>
+                    </div>
+
+                </div>
+                <div class="col-xl-3">
+                    로드뷰
+                    <div class="error_page footer_apps_widget text-center">
+                        <div id="pano"></div>
+                    </div>
+
+                </div>
+                <div class="col-xl-3">
+                    과거사진
+                    <div class="error_page footer_apps_widget text-center">
+                        <img class="img-fluid" src="/images/resource/coming-soon.png" alt="coming-soon.png" id="mapPos">
+                    </div>
+
+                </div>
+                <div class="col-xl-3">
+                    예상사진 or 사진 두장
+                    <div class="error_page footer_apps_widget text-center">
+                        <img class="img-fluid" src="/images/resource/coming-soon.png" alt="coming-soon.png">
+                    </div>
+
+                </div>
+                <div class="col-lg-12" style="padding-top: 3%">
+                    <div class="table-responsive invoice_table_list">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th class="body-color border-left " scope="row" style="background-color: #fafafa;">이름
+                                </th>
+                                <td class="body-color" colspan="3" style="border-right:1px solid #eaeaea; ">김하윤</td>
+                            </tr>
+                            <tr>
+                                <th class="body-color border-left" scope="row" style="background-color: #fafafa;">실종일자
+                                </th>
+                                <td class="body-color" colspan="3" style="border-right:1px solid #eaeaea; ">2023년 11월
+                                    24일(만 20세)
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <th class="body-color border-left" scope="row"
+                                    style="border-bottom: 1px solid #eaeaea; background-color: #fafafa;">실종지역
+                                </th>
+                                <td class="body-color" colspan="3"
+                                    style="border-right:1px solid #eaeaea; border-bottom:1px solid #eaeaea;">(지도핀이미지)
+                                    서울특별시 강서구 화곡동
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="body-color border-left" scope="row"
+                                    style="border-bottom: 1px solid #eaeaea; background-color: #fafafa;">기타특징
+                                </th>
+                                <td class="body-color" colspan="3"
+                                    style="border-right:1px solid #eaeaea; border-bottom:1px solid #eaeaea; ">특징 나열
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+        <section id="property-city" class="property-city border-bottom pb70">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 offset-lg-3">
+                        <div class="main-title text-center">
+                            <h2>비슷한 실종휴먼</h2>
+                            <p>Cities You Must Explore This Summer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="feature_place_home2_slider">
+                            <div class="item">
+                                <div class="properti_city">
+                                    <div class="thumb"><img class="img-fluid w100" src="/images/property/pc5.jpg" alt="pc5.jpg"></div>
+                                    <div class="overlay">
+                                        <div class="details">
+                                            <h4>Miami</h4>
+                                            <p>62 Listing</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="properti_city">
+                                    <div class="thumb"><img class="img-fluid w100" src="/images/property/pc6.jpg" alt="pc6.jpg"></div>
+                                    <div class="overlay">
+                                        <div class="details">
+                                            <h4>Roma</h4>
+                                            <p>92 Listing</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="properti_city">
+                                    <div class="thumb"><img class="img-fluid w100" src="/images/property/pc7.jpg" alt="pc7.jpg"></div>
+                                    <div class="overlay">
+                                        <div class="details">
+                                            <h4>New Delhi</h4>
+                                            <p>12 Listing</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="properti_city">
+                                    <div class="thumb"><img class="img-fluid w100" src="/images/property/pc8.jpg" alt="pc8.jpg"></div>
+                                    <div class="overlay">
+                                        <div class="details">
+                                            <h4>London</h4>
+                                            <p>74 Listing</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="properti_city">
+                                    <div class="thumb"><img class="img-fluid w100" src="/images/property/pc5.jpg" alt="pc5.jpg"></div>
+                                    <div class="overlay">
+                                        <div class="details">
+                                            <h4>Miami</h4>
+                                            <p>62 Listing</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </section>
+
+
+</div>
+
+<!-- Wrapper End -->
+<script src="/js/jquery-3.6.0.js"></script>
+<script src="/js/jquery-migrate-3.0.0.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.mmenu.all.js"></script>
+<script src="/js/ace-responsive-menu.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
+<script src="/js/snackbar.min.js"></script>
+<script src="/js/simplebar.js"></script>
+<script src="/js/parallax.js"></script>
+<script src="/js/scrollto.js"></script>
+<script src="/js/jquery-scrolltofixed-min.js"></script>
+<script src="/js/jquery.counterup.js"></script>
+<script src="/js/wow.min.js"></script>
+<script src="/js/progressbar.js"></script>
+<script src="/js/slider.js"></script>
+<script src="/js/timepicker.js"></script>
+
+<!-- Custom script for all pages -->
+<script src="/js/script.js"></script>
+
+<script>
+
+    let size;
+
+    /* 지도 생성 시작!*/
+    let pano = new naver.maps.Panorama(document.getElementById("pano"), {
+        position: new naver.maps.LatLng(37.3595704, 127.105399)
+    });
+
+    let mapOptions = {
+        center: new naver.maps.LatLng(37.3595704, 127.105399),
+        zoom: 10
+    };
+
+    let map = new naver.maps.Map('map', mapOptions); // id와 option
+
+
+    window.addEventListener('DOMContentLoaded', function () {
+        resize();
+        window.addEventListener('resize', resize);
+    });
+
+    function resize() {
+        // Get the mapPos element
+        var mapPosElement = document.getElementById('mapPos');
+        // Calculate the height for the map (subtracting twice the offsetHeight of mapPos)
+        var mapHeight = mapPosElement.offsetHeight;
+        // Set the width for the map
+        var mapWidth = mapPosElement.offsetWidth;
+        // Resize the Naver Map
+        size = new naver.maps.Size(mapWidth, mapHeight);
+        pano.setSize(size);
+        map.setSize(size);
+    }
+
+    /* 지도 생성 종료*/
+
+
+</script>
+</body>
+</html>
+</body>
+</html>
