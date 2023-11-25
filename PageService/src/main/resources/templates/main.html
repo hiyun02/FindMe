@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="keywords" content="airbnb, booking, city guide, directory, events, hotel booking, listings, marketing, places, restaurant, restaurant">
+<meta name="description" content="Guido - Directory & Listing HTML Template">
+<meta name="CreativeLayers" content="ATFN">
+<!-- css file -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/style.css">
+<!-- Responsive stylesheet -->
+<link rel="stylesheet" href="/css/responsive.css">
+<!-- Title -->
+<title>Exception 메인</title>
+<!-- Favicon -->
+<link href="/images/favicon.ico" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
+<link href="/images/favicon.ico" sizes="128x128" rel="shortcut icon" />
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="wrapper">
+	<div class="preloader"></div>
+	<!-- 헤더 파일 시작! -->
+	<th:block th:replace="header"></th:block>
+	<!-- 헤더 파일 종료! -->
+	 
+
+	<!-- Home Design -->
+	<section class="home-one home1-overlay bg-img1">
+		<div class="container">
+			<div class="row posr">
+				<div class="col-lg-12">
+					<div class="home_content home1">
+						<div class="home-text text-center">
+							<h2 class="fz50">Explore Amazing Destinations</h2>
+							<p class="fz18 color-white">Find great places to stay, eat, shop, or visit from local experts.</p>
+						</div>
+						<div class="row justify-content-center">
+							<div class="col-lg-10 col-xl-8">
+								<div class="home_adv_srch_opt text-center">
+									<div class="wrapper">
+										<div class="home_adv_srch_form">
+											<form class="bgc-white bgct-767 pl30 pt10 pl0-767">
+												<div class="form-row align-items-center">
+												    <div class="col-auto home_form_input mb20-xsd">
+												      	<label class="sr-only">Username</label>
+												      	<div class="input-group style1 mb-2 mb0-767">
+												        	<div class="input-group-prepend">
+												        		<div class="input-group-text pl0 pb0-767">What</div>
+												        	</div>
+															<div class="select-wrap style1-dropdown">
+														    	<select name="lang" class="form-control js-searchBox">
+																	<option value="">Ex: shopping, restaurant...</option>
+																	<option value="TopPicks">Top Picks</option>
+																	<option value="CityOfLondon">City of London</option>
+																	<option value="OutdoorActivities">Outdoor Activities</option>
+																	<option value="Restaurant">Restaurant</option>
+																	<option value="Hotels">Hotels</option>
+														    	</select>
+														    </div>
+												      	</div>
+												    </div>
+												    <div class="col-auto home_form_input">
+												      	<label class="sr-only">Username</label>
+												      	<div class="input-group style2 mb-2 mb0-767">
+												        	<div class="input-group-prepend">
+												        		<div class="input-group-text pb0-767">Where</div>
+												        	</div>
+															<div class="select-wrap style2-dropdown">
+														    	<select name="lang" class="form-control js-searchBox2">
+																	<option value="">Your City</option>
+																	<option value="NewYork">New York</option>
+																	<option value="London">London</option>
+																	<option value="Paris">Paris</option>
+																	<option value="Istanbul">Istanbul</option>
+																	<option value="LosAngeles">Los Angeles</option>
+														    	</select>
+														    </div>
+												      	</div>
+												    </div>
+												    <div class="col-auto home_form_input2">
+												    	<button type="submit" class="btn search-btn mb-2"><span class="flaticon-loupe"></span></button>
+												    </div>
+												</div>
+											</form>
+										</div>
+									</div>
+									<div class="home_mobile_slider home_custom_list dn db-767">
+										<div class="item">
+											<div class="icon_home1">
+												<div class="icon"><span class="flaticon-cutlery"></span></div>
+												<p>Restaurant</p>
+											</div>
+										</div>
+										<div class="item">
+											<div class="icon_home1">
+												<div class="icon"><span class="flaticon-shopping-bag"></span></div>
+												<p>Shopping</p>
+											</div>
+										</div>
+										<div class="item">
+											<div class="icon_home1">
+												<div class="icon"><span class="flaticon-tent"></span></div>
+												<p>Outdoor Activities</p>
+											</div>
+										</div>
+										<div class="item">
+											<div class="icon_home1">
+												<div class="icon"><span class="flaticon-desk-bell"></span></div>
+												<p>Hotels</p>
+											</div>
+										</div>
+										<div class="item">
+											<div class="icon_home1">
+												<div class="icon"><span class="flaticon-mirror"></span></div>
+												<p>Beautu & Spa</p>
+											</div>
+										</div>
+										<div class="item">
+											<div class="icon_home1">
+												<div class="icon"><span class="flaticon-brake"></span></div>
+												<p>Automotive</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 우리꺼 DB 실종정보-->
+	<section id="feature-property" class="feature-property pt0 border-bottom">
+		<div class="container pt100-767">
+			<div class="row justify-content-center">
+				<div class="col-lg-8" style="margin-top: 5%;">
+					<div class="main-title text-center">
+						<h2>경찰정 실종자 현황</h2>
+						<p>어쩌구 저쩌구</p>
+					</div>
+				</div>
+				<div class="col-lg-12">
+					<div class="popular_listing_slider1">
+						<div class="item">
+							<div class="feat_property">
+								<div class="thumb">
+									<img class="img-whp" src="/images/property/fp1.jpg" alt="fp1.jpg">
+									<div class="thmb_cntnt">
+										
+										<ul class="tag2 mb0">
+											<!-- 여기서 if문 걸어서 3개로 나눠서 제공해야해 정상아동, 지적장애, 치매 색깔다르게
+											 현재 정상아동은 빨간색으로 되어있는데 이거 바꿀껀지 얘기하자
+											-->
+											<li class="list-inline-item"><a href="#" style="background-color:;">정상아동</a></li>
+											<!-- <li class="list-inline-item"><a href="#" style="background-color:blue;">장애인</a></li> -->
+											<!-- <li class="list-inline-item"><a href="#" style="background-color:green;">치매환자</a></li> -->
+
+										</ul>
+									
+									</div>
+								</div>
+								<div class="details">
+									<div class="tc_content">
+										<h4>김범중(27세, 남자)</h4>
+										<p>당시나이 : </p>
+										<p>발생일시 : </p>
+										<p>발생장소 : </p>
+										<p>착의사항 : </p>
+									</div>
+									<div class="fp_footer">
+										<ul class="prop_details mb0">
+											<li class="list-inline-item"><a href="#"><span class="flaticon-phone pr5"></span>제보하기</a></li>
+											<li class="list-inline-item"><a href="#"><span class="flaticon-pin pr5"></span>서울특별시 송파구</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<!-- 우리꺼 DB 실종자 현황-->
+	<section id="feature-property" class="feature-property pt0 border-bottom">
+		<div class="container pt100-767">
+			<div class="row justify-content-center">
+				<div class="col-lg-8" style="margin-top: 5%;">
+					<div class="main-title text-center">
+						<h2>최근 등록된 실종자</h2>
+						<p>어쩌구 저쩌구</p>
+					</div>
+				</div>
+				<div class="col-lg-12">
+					<div class="popular_listing_slider1">
+						<div class="item">
+							<div class="feat_property">
+								<div class="thumb">
+									<img class="img-whp" src="/images/property/fp1.jpg" alt="fp1.jpg">
+									<div class="thmb_cntnt">
+										
+										<ul class="tag2 mb0">
+											<!-- 여기서 if문 걸어서 3개로 나눠서 제공해야해 정상아동, 지적장애, 치매 색깔다르게
+											 현재 정상아동은 빨간색으로 되어있는데 이거 바꿀껀지 얘기하자
+											-->
+											<li class="list-inline-item"><a href="#" style="background-color:;">정상아동</a></li>
+											<!-- <li class="list-inline-item"><a href="#" style="background-color:blue;">장애인</a></li> -->
+											<!-- <li class="list-inline-item"><a href="#" style="background-color:green;">치매환자</a></li> -->
+
+										</ul>
+									
+									</div>
+								</div>
+								<div class="details">
+									<div class="tc_content">
+										<h4>김범중(27세, 남자)</h4>
+										<p>당시나이 : </p>
+										<p>발생일시 : </p>
+										<p>발생장소 : </p>
+										<p>착의사항 : </p>
+									</div>
+									<div class="fp_footer">
+										<ul class="prop_details mb0">
+											<li class="list-inline-item"><a href="#"><span class="flaticon-phone pr5"></span>제보하기</a></li>
+											<li class="list-inline-item"><a href="#"><span class="flaticon-pin pr5"></span>서울특별시 송파구</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Property Cities -->
+	
+
+	<!-- How It Works -->
+	<section id="why-chose" class="whychose_us bgc-f7 pb70">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 offset-lg-3">
+					<div class="main-title text-center">
+						<h2>How it Works</h2>
+						<p>Bringing business and community members together.</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 col-lg-4 col-xl-4">
+					<div class="why_chose_us">
+						<div class="icon">
+							<span class="flaticon-find-location"></span>
+						</div>
+						<div class="details">
+							<h4>Find Businesses</h4>
+							<p>Discover & connect with great local businesses in your local neighborhood like dentists, hair stylists and more.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 col-xl-4">
+					<div class="why_chose_us">
+						<div class="icon">
+							<span class="flaticon-comment"></span>
+						</div>
+						<div class="details">
+							<h4>Review Listings</h4>
+							<p>Discover & connect with great local businesses in your local neighborhood like dentists, hair stylists and more.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 col-xl-4">
+					<div class="why_chose_us">
+						<div class="icon">
+							<span class="flaticon-date"></span>
+						</div>
+						<div class="details">
+							<h4>Make a Reservation</h4>
+							<p>Discover & connect with great local businesses in your local neighborhood like dentists, hair stylists and more.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	
+</div>
+<!-- Wrapper End -->
+<script src="/js/jquery-3.6.0.js"></script>
+<script src="/js/jquery-migrate-3.0.0.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.mmenu.all.js"></script>
+<script src="/js/ace-responsive-menu.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
+<script src="/js/isotop.js"></script>
+<script src="/js/snackbar.min.js"></script>
+<script src="/js/simplebar.js"></script>
+<script src="/js/parallax.js"></script>
+<script src="/js/scrollto.js"></script>
+<script src="/js/jquery-scrolltofixed-min.js"></script>
+<script src="/js/jquery.counterup.js"></script>
+<script src="/js/wow.min.js"></script>
+<script src="/js/progressbar.js"></script>
+<script src="/js/slider.js"></script>
+<script src="/js/timepicker.js"></script>
+<!-- Custom script for all pages --> 
+<script src="/js/script.js"></script>
+</body>
+</html>
