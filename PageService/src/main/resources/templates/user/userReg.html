@@ -106,7 +106,7 @@
 											<ul class="add_listing selectable-list">
 												<li>
 													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input" id="customCheck1" name="userAlarm" value="1">
+														<input type="checkbox" class="custom-control-input" id="customCheck1" name="userAlarm" value="1" onclick="alarmCheckBox(this)">
 														<label class="custom-control-label" for="customCheck1">동의</label>
 													</div>
 												</li>
@@ -114,7 +114,7 @@
 											<ul class="add_listing selectable-list ml100 ml0-xxsd">
 												<li>
 													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input" id="customCheck4" name="userAlarm" value="0">
+														<input type="checkbox" class="custom-control-input" id="customCheck4" name="userAlarm" value="0" onclick="alarmCheckBox(this)">
 														<label class="custom-control-label" for="customCheck4">비동의</label>
 													</div>
 												</li>
@@ -170,5 +170,6 @@
 <script src="/js/googlemaps1.js"></script>
 <!-- Custom script for all pages --> 
 <script src="/js/script.js"></script>
+<script src="/js/checkBox.js"></script>
 </body>
 </html>
