@@ -45,9 +45,15 @@
                 <li>
                     <a href="/user/edit"><span class="title">내 정보 수정</span></a>
                 </li>
-                <li class="list-inline-item list_s"><a href="/user/login" class="btn flaticon-avatar"
-                                                       data-toggle="modal" data-target=".bd-example-modal-lg"> <span
-                        class="dn-1200">로그인</span></a></li>
+                </li>
+
+                <li class="list-inline-item list_s">
+                    <a href="/user/login" onclick="location.href='/user/login'" class="btn flaticon-avatar" data-toggle="modal"
+                       data-target=".bd-example-modal-lg">
+                        <span class="dn-1200">로그인</span>
+                    </a>
+                </li>
+
             </ul>
         </nav>
     </div>
@@ -58,14 +64,15 @@
     <div class="mobile-menu">
         <div class="header stylehome1">
             <div class="main_logo_home2 text-left">
-                <img class="nav_logo_img img-fluid mt15" src="/images/header-logo2.svg" alt="header-logo2.svg">
-                <span class="mt15">Guido</span>
+                <img class="nav_logo_img img-fluid mt15" src="/images/logo/findMe.png" alt="header-logo2.svg"
+                     style="width: 100px; height: 40px;">
+                <span class="mt15"></span>
             </div>
             <ul class="menu_bar_home2">
                 <li class="list-inline-item"><a class="custom_search_with_menu_trigger msearch_icon" href="#"
                                                 data-toggle="modal" data-target="#staticBackdrop"><span
                         class="flaticon-loupe"></span></a></li>
-                <li class="list-inline-item"><a class="muser_icon" href="page-register.html"><span
+                <li class="list-inline-item"><a class="muser_icon" href="/user/login"><span
                         class="flaticon-avatar"></span></a></li>
                 <li class="list-inline-item"><a class="menubar" href="#menu"><span></span></a></li>
             </ul>
@@ -83,8 +90,6 @@
             <li><a href="/police/policeMissList"><span class="title">경찰청 실종 정보</span></a></li>
             <li><a href="#"><span>제보방</span></a></li>
             <li><a href="/user/edit"><span>내 정보 수정</span></a></li>
-            <li><a href="/user/login"><span class="flaticon-avatar"></span> 로그인</a></li>
-            <!--       <li class="cl_btn"><a class="btn btn-block btn-lg btn-thm rounded" href="#"><span class="icon">+</span> Create Listing</a></li>-->
         </ul>
     </nav>
 </div>

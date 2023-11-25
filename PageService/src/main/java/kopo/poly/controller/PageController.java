@@ -12,7 +12,8 @@ public class PageController {
     /* 로그인 페이지 */
     @GetMapping("/user/login")
     public String userLogin() {
-        return "user/userLogin";
+        return "user/userLogin" +
+                "";
     }
 
     /* 회원가입 페이지 */
