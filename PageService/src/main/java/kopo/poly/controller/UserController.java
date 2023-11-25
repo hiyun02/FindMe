@@ -14,7 +14,9 @@ public class UserController {
 
     /* 로그인 페이지 */
     @GetMapping("login")
-    public String userLogin() {return "user/userLogin";}
+    public String userLogin() {
+        return "user/userLogin";
+    }
 
     /* 회원가입 페이지 */
     @GetMapping("userReg")
@@ -34,4 +36,7 @@ public class UserController {
         return "user/findUserPwd";
     }
 
+    /* 회원정보 수정 페이지*/
+    @GetMapping("profile")
+    public String profile(){return "user/profile";}
 }

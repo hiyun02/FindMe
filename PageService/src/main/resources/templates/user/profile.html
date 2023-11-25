@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords"
+		content="airbnb, booking, city guide, directory, events, hotel booking, listings, marketing, places, restaurant, restaurant">
+	<meta name="description" content="Guido - Directory & Listing HTML Template">
+	<meta name="CreativeLayers" content="ATFN">
+	<!-- css file -->
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/dashbord_navitaion.css">
+	<!-- Responsive stylesheet -->
+	<link rel="stylesheet" href="/css/responsive.css">
+	<!-- Title -->
+	<title>Guido - Directory & Listing HTML Template</title>
+	<!-- Favicon -->
+	<link href="/css/favicon.ico" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
+	<link href="/css/favicon.ico" sizes="128x128" rel="shortcut icon" />
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+	<div class="wrapper">
+		<div class="preloader"></div>
+		<!-- 헤더 파일 시작! -->
+		<th:block th:replace="header"></th:block>
+		<!-- 헤더 파일 종료! -->
+		<!-- Our Dashbord -->
+		<section class="our-dashbord dashbord bgc-f4">
+			<div class="container">
+				<div class="row">
+
+
+					<div class="col-lg-12">
+						<div class="row" style="justify-content:center;">
+							<div class="col-xl-8">
+								<div class="my_dashboard_profile mb30-lg">
+									<h4 class="mb30" style="font-weight: bold;">내 정보 수정</h4>
+									<div class="row">
+										<div class="col-lg-12">
+											<div class="my_profile_setting_input form-group mt100-500"
+												style="margin-top: 5%;">
+												<label for="userName">이름</label>
+												<input type="text" class="form-control" id="userName" name="userName"
+													placeholder="">
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<div class="my_profile_setting_input form-group mt100-500">
+												<label for="userEmail">이메일</label>
+												<input type="text" class="form-control" id="userEmail" name="userEmail"
+													placeholder="">
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<div class="my_profile_setting_input form-group">
+												<label for="userAddr1">주소</label>
+												<input type="text" class="form-control" id="userAddr1" name="userAddr1">
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<div class="my_profile_setting_input form-group">
+												<label for="userAddr2">상세주소</label>
+												<input type="email" class="form-control" id="userAddr2"
+													name="userAddr2">
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<div class="my_profile_setting_input form-group">
+												<label for="userAddr2">상세주소</label>
+												<input type="email" class="form-control" id="userAddr2"
+													name="userAddr2">
+											</div>
+										</div>
+
+										<div class="col-xl-12">
+											<div class="my_profile_setting_textarea">
+												<label for="exampleFormControlTextarea1">알람여부</label>
+												<div
+													class="my_profile_setting_input ui_kit_select_search form-group list_hightlights df">
+													<ul class="add_listing selectable-list">
+														<li>
+															<div class="custom-control custom-checkbox">
+																<input type="checkbox" class="custom-control-input"
+																	id="customCheck1" name="userAlarm" value="1" onclick="alarmCheckBox(this)">
+																<label class="custom-control-label"
+																	for="customCheck1">동의</label>
+															</div>
+														</li>
+													</ul>
+													<ul class="add_listing selectable-list ml100 ml0-xxsd">
+														<li>
+															<div class="custom-control custom-checkbox">
+																<input type="checkbox" class="custom-control-input"
+																	id="customCheck4" name="userAlarm" value="0" onclick="alarmCheckBox(this)">
+																<label class="custom-control-label"
+																	for="customCheck4">비동의</label>
+															</div>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<button type="submit" class="btn btn-log btn-block btn-thm" style="height: 50px;">수정하기</button>
+
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		
+	</div>
+	<!-- Wrapper End -->
+	<script src="/js/jquery-3.6.0.js"></script>
+	<script src="/js/jquery-migrate-3.0.0.min.js"></script>
+	<script src="/js/popper.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/jquery.mmenu.all.js"></script>
+	<script src="/js/ace-responsive-menu.js"></script>
+	<script src="/js/bootstrap-select.min.js"></script>
+	<script src="/js/snackbar.min.js"></script>
+	<script src="/js/simplebar.js"></script>
+	<script src="/js/parallax.js"></script>
+	<script src="/js/scrollto.js"></script>
+	<script src="/js/jquery-scrolltofixed-min.js"></script>
+	<script src="/js/jquery.counterup.js"></script>
+	<script src="/js/wow.min.js"></script>
+	<script src="/js/progressbar.js"></script>
+	<script src="/js/slider.js"></script>
+	<script src="/js/timepicker.js"></script>
+	<script src="/js/wow.min.js"></script>
+	<script src="/js/smartuploader.js"></script>
+	<script src="/js/dashboard-script.js"></script>
+	<!-- Custom script for all pages -->
+	<script src="/js/script.js"></script>
+	<script src="/js/checkBox.js"></script>
+</body>
+
+</html>
