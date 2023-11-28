@@ -6,7 +6,7 @@ import kopo.poly.repository.WarnRepository;
 import kopo.poly.repository.entity.FindApiEntity;
 import kopo.poly.repository.entity.WarnApiEntity;
 import kopo.poly.service.IApiService;
-import kopo.poly.service.IPoliceApiService;
+import kopo.poly.service.feign.IPoliceApiService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

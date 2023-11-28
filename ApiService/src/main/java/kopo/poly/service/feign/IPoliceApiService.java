@@ -1,4 +1,4 @@
-package kopo.poly.service;
+package kopo.poly.service.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;

@@ -3,6 +3,7 @@ package kopo.poly.config;
 import feign.Contract;
 import feign.Logger;
 
+import feign.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,19 @@ public class OpenFeignConfig {
 
     @Value("${policeApi.authKey}")
     private String authKey;
+
+    private String appId = "PEJ4G2LMAX";
+    private String appKey = "mJdVZjHDHE22UKZwQmedA1KALvDDBu2AaU8TR2kc";
+
+    @Bean
+    public RequestInterceptor requestInterceptor() {
+
+        return requestTemplate -> {
+            requestTemplate.header("Accept", "application/json");
+            requestTemplate.header("app-id", appId);
+            requestTemplate.header("appKey", appKey);
+        };
+    }
 
 
 
