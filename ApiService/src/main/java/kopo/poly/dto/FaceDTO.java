@@ -2,6 +2,7 @@ package kopo.poly.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
@@ -36,6 +37,12 @@ public record FaceDTO(
         int engine_version, // 인식 엔진의 버전
 
         //---Face Recognize---
+        double threshold,
+//      threshold : 0 인 경우 동일인물, 1 인 경우 다른 인물에 가까움
+//      Default : 0.32
+//      특정 Site 마다 threshold 를 조절하여 precision, recall tuning 가능
+//      threshold 가 작은 값일수록 precision이 높아지지만, recall 이 낮아짐
+//      threshold 가 높은 값일수록 precision이 낮아지지만, recall 이 높아짐(다양한 얼굴의 variation 인식이 필요한 경우 조절)
         String distance, // 가장 비슷한 얼굴과의 거리 값(작을수록 유사성 높음)
         FaceBoxDTO face_box, // 인식된 얼굴의 이미지 상에서의 위치
         // 각 표정에 대한 Confidence Value (fear, surprised, neutral, angry, smile, sad, etc)

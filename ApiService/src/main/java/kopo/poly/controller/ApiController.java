@@ -100,7 +100,6 @@ public class ApiController {
 
         log.info(getClass().getName()+ "실종 검색 DB에 저장 종료 ");
 
-
         return res;
     }
 

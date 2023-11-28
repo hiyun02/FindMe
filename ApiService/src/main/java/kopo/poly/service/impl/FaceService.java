@@ -3,6 +3,7 @@ package kopo.poly.service.impl;
 import kopo.poly.dto.FaceDTO;
 import kopo.poly.service.IFaceService;
 import kopo.poly.service.ISubjectService;
+import kopo.poly.service.feign.IFaceAPIService;
 import kopo.poly.service.feign.ISubjectAPIService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,41 +18,29 @@ import java.util.Optional;
 @Service
 public class FaceService implements IFaceService {
 
-    private final ISubjectAPIService subjectAPIService;
+    private final IFaceAPIService faceAPIService;
 
     @Override
-    public List<FaceDTO> getSubjectList(FaceDTO pDTO) throws Exception {
+    public List<FaceDTO> getFaceList(FaceDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".getSubjectList Start!");
+        log.info(this.getClass().getName() + ".getFaceList Start!");
 
-        List<FaceDTO> SubjectList = Optional.ofNullable(subjectAPIService
-                .getSubjectList(pDTO.group_id())).orElse(new ArrayList<>());
+        List<FaceDTO> faceDTOList = Optional.ofNullable(faceAPIService
+                .getFaceList(pDTO.group_id(), pDTO.subject_id())).orElse(new ArrayList<>());
 
-        log.info(this.getClass().getName() + ".getSubjectList Start!");
+        log.info(this.getClass().getName() + ".getFaceList Start!");
 
-        return SubjectList;
+        return faceDTOList;
     }
 
     @Override
-    public FaceDTO getSubject(FaceDTO pDTO) throws Exception {
-
-        log.info(this.getClass().getName() + ".getSubjectList Start!");
-
-        FaceDTO subjectDTO = Optional.ofNullable(subjectAPIService
-                .getSubject(pDTO.group_id(), pDTO.subject_name())).orElse(FaceDTO.builder().build());
-
-        log.info(this.getClass().getName() + ".getSubjectList Start!");
-
-        return subjectDTO;
-    }
-
-    @Override
-    public FaceDTO createSubject(FaceDTO pDTO) throws Exception {
+    public FaceDTO createFace(FaceDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".createSubject Start!");
 
-        FaceDTO faceDTO = Optional.ofNullable(subjectAPIService
-                .createSubject(pDTO.group_id(), pDTO.subject_name())).orElse(FaceDTO.builder().build());
+        FaceDTO faceDTO = Optional.ofNullable(faceAPIService
+                .createFace(pDTO.group_id(), pDTO.subject_id(), pDTO.face_name(), "image"))
+                .orElse(FaceDTO.builder().build());
 
         log.info(this.getClass().getName() + ".createSubject Start!");
 
@@ -59,11 +48,11 @@ public class FaceService implements IFaceService {
     }
 
     @Override
-    public void deleteSubject(FaceDTO pDTO) throws Exception {
+    public void deleteFace(FaceDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".deleteSubject Start!");
 
-        subjectAPIService.deleteSubject(pDTO.group_id(), pDTO.subject_id());
+        faceAPIService.deleteFace(pDTO.group_id(), pDTO.subject_id(), pDTO.face_id());
 
         log.info(this.getClass().getName() + ".deleteSubject End!");
     }
