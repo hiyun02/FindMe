@@ -1,10 +1,8 @@
 package kopo.poly.service.impl;
 
 import kopo.poly.dto.FaceDTO;
-import kopo.poly.service.IFaceService;
-import kopo.poly.service.ISubjectService;
-import kopo.poly.service.feign.IFaceAPIService;
-import kopo.poly.service.feign.ISubjectAPIService;
+import kopo.poly.service.IFaceInfoService;
+import kopo.poly.service.feign.IFaceInfoAPIService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,16 +14,16 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class FaceService implements IFaceService {
+public class FaceInfoService implements IFaceInfoService {
 
-    private final IFaceAPIService faceAPIService;
+    private final IFaceInfoAPIService faceInfoAPIService;
 
     @Override
     public List<FaceDTO> getFaceList(FaceDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".getFaceList Start!");
 
-        List<FaceDTO> faceDTOList = Optional.ofNullable(faceAPIService
+        List<FaceDTO> faceDTOList = Optional.ofNullable(faceInfoAPIService
                 .getFaceList(pDTO.group_id(), pDTO.subject_id())).orElse(new ArrayList<>());
 
         log.info(this.getClass().getName() + ".getFaceList Start!");
@@ -38,7 +36,7 @@ public class FaceService implements IFaceService {
 
         log.info(this.getClass().getName() + ".createSubject Start!");
 
-        FaceDTO faceDTO = Optional.ofNullable(faceAPIService
+        FaceDTO faceDTO = Optional.ofNullable(faceInfoAPIService
                 .createFace(pDTO.group_id(), pDTO.subject_id(), pDTO.face_name(), "image"))
                 .orElse(FaceDTO.builder().build());
 
@@ -52,7 +50,7 @@ public class FaceService implements IFaceService {
 
         log.info(this.getClass().getName() + ".deleteSubject Start!");
 
-        faceAPIService.deleteFace(pDTO.group_id(), pDTO.subject_id(), pDTO.face_id());
+        faceInfoAPIService.deleteFace(pDTO.group_id(), pDTO.subject_id(), pDTO.face_id());
 
         log.info(this.getClass().getName() + ".deleteSubject End!");
     }

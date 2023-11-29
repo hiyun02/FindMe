@@ -4,8 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kopo.poly.dto.FaceDTO;
-import kopo.poly.service.IFaceService;
-import kopo.poly.service.ISubjectService;
+import kopo.poly.service.IFaceInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +14,12 @@ import java.util.List;
 @CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST, GET, DELETE"}, allowCredentials = "true")
 @Tag(name = "NUGU-Face 서비스", description = "얼굴 이미지 Face API")
 @Slf4j
-@RequestMapping(value = "/facecan/face")
+@RequestMapping(value = "/facecan/faceInfo")
 @RequiredArgsConstructor
 @RestController
-public class FaceController {
+public class FaceInfoController {
 
-    private final IFaceService faceService;
+    private final IFaceInfoService faceInfoService;
 
     /**
      * 얼굴정보 조회하기
@@ -39,7 +38,7 @@ public class FaceController {
 
         log.info("조회할 Face 정보의 소속 Group 아이디 : ", pDTO.group_id());
         log.info("조회할 Face 정보의 소속 Subejct 아이디 : ", pDTO.subject_id());
-        List<FaceDTO> rList = faceService.getFaceList(pDTO);
+        List<FaceDTO> rList = faceInfoService.getFaceList(pDTO);
         log.info("조회된 Face 개수 : ", rList.size());
 
         log.info(this.getClass().getName() + ".getFaceList End! ");
@@ -65,7 +64,7 @@ public class FaceController {
         log.info("등록할 Face의 Group 아이디 : ", pDTO.group_id());
         log.info("등록할 Face의 Subejct 아이디 : ", pDTO.subject_id());
         log.info("등록할 Face 이름 : ", pDTO.face_name());
-        FaceDTO faceDTO = faceService.createFace(pDTO);
+        FaceDTO faceDTO = faceInfoService.createFace(pDTO);
 
         log.info(this.getClass().getName() + ".createFace End! ");
 
@@ -91,7 +90,7 @@ public class FaceController {
         log.info("삭제할 Face의 소속 Group 아이디 : ", pDTO.group_id());
         log.info("삭제할 Face의 소속 Subject 아이디 : ", pDTO.subject_id());
         log.info("삭제할 Face 아이디 : ", pDTO.face_id());
-        faceService.deleteFace(pDTO);
+        faceInfoService.deleteFace(pDTO);
         res = 1; //성공 시 1 반환
 
         log.info(this.getClass().getName() + ".deleteFace End! ");

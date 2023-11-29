@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// Face Recognize API : 이미지가 입력되면, 관리 중인 Face 중 가장 유사한 것을 찾아서 반환함ㅁㄴ
-@FeignClient(name = "RecAPI", url = "https://apis.openapi.sk.com/nugufacecan/v1/recognize")
+// Face Recognize API : 이미지가 입력되면, 관리 중인 Face 중 유사한 것들을 찾아서 반환함 (기준:threshold)
+@FeignClient(name = "FaceRecAPI", url = "https://apis.openapi.sk.com/nugufacecan/v1/recognize")
 public interface IFaceRecAPIService {
 
     /**

@@ -4,14 +4,13 @@ import kopo.poly.dto.FaceDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 // Face -> Subject -> Group 순으로 포함되는 개념임
 // Face를 찾거나 지정하기 위해선 Subject가, Subject를 찾거나 지정하기 위해선 Group이 요구됨
 @FeignClient(name = "FaceAPI", url = "https://apis.openapi.sk.com/nugufacecan/v1/face")
-public interface IFaceAPIService {
+public interface IFaceInfoAPIService {
 
     /**
      * @param group_id : 조회할 Face의 소속 Group

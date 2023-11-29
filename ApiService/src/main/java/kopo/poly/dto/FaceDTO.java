@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 // SK Open API 제공 Nugu API 사용을 위한 FaceDTO.
@@ -45,8 +46,13 @@ public record FaceDTO(
 //      threshold 가 높은 값일수록 precision이 낮아지지만, recall 이 높아짐(다양한 얼굴의 variation 인식이 필요한 경우 조절)
         String distance, // 가장 비슷한 얼굴과의 거리 값(작을수록 유사성 높음)
         FaceBoxDTO face_box, // 인식된 얼굴의 이미지 상에서의 위치
-        // 각 표정에 대한 Confidence Value (fear, surprised, neutral, angry, smile, sad, etc)
+//      각 표정에 대한 Confidence Value (fear, surprised, neutral, angry, smile, sad, etc)
         Map<String, Double> expression_raw,
-        String transaction_id // 해당 결과에 대한 식별 ID
+        String transaction_id, // 해당 결과에 대한 식별 ID
+
+        //---Face Aging---
+        String imagePath,
+        String targetAge,
+        List<Map<String, String>> output
 ) {
 }
