@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class OverMissController {
 
     @GetMapping("missList")
-    public String overMissList() {return "overmiss/overMissList";}
+    public String overMissList() {
 
+        log.info("실행");
+        return "overmiss/overMissList";}
 }

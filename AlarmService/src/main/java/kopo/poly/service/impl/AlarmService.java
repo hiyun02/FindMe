@@ -8,13 +8,25 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class AlarmService implements IAlarmService {
+
+    @Override
+    public int saveToken(AlarmMsgDTO pDTO) throws Exception {
+
+        log.info(getClass().getName() + "saveToken start");
+
+        int res = 0;
+
+
+
+        log.info(getClass().getName() + "saveToken End");
+        return res;
+    }
+
+
     @Override
     public int sendMessing(AlarmMsgDTO pDTO) throws Exception {
         return 0;
     }
 
-    @Override
-    public int saveToken(AlarmMsgDTO pDTO) throws Exception {
-        return 0;
-    }
+
 }
