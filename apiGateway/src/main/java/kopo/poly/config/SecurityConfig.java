@@ -63,6 +63,17 @@ public class SecurityConfig {
                         // Api Service
                         .pathMatchers("/api/**").permitAll()
 
+
+                        /**
+                         * 추후 토큰 없으면 인가 안되게 막아야됨!
+                         */
+                        .pathMatchers("/facecan/**").permitAll()
+                        .pathMatchers("/SAM/**").permitAll()
+                        .pathMatchers("/alarm/**").permitAll()
+
+
+
+
 //                        .anyExchange().authenticated() // 그외 나머지 url 요청은 인증된 사용자만 가능 즉 권한이 없더라도 로그인은 되어있어야함
                         .anyExchange().permitAll() // 그 외 나머지 url 요청은 인증 받지 않아도 접속 가능함
         );

@@ -136,7 +136,6 @@ public class UserRegController {
                     @ApiResponse(responseCode = "404", description = "Page Not Found!"),
             }
     )
-    @ResponseBody
     @PostMapping(value = "userIdCheck")
     public Map<String, Integer> idCheck(HttpServletRequest request) throws Exception {
 
@@ -150,6 +149,8 @@ public class UserRegController {
         int res = userInfoSsService.idCheck(userId);
 
         map.put("code", res);
+
+        log.info("중복 결과 값 :" + res);
 
         log.info(getClass().getName() + "idCheck End ");
 
@@ -171,9 +172,8 @@ public class UserRegController {
                     @ApiResponse(responseCode = "404", description = "Page Not Found!"),
             }
     )
-    @ResponseBody
     @PostMapping(value = "sendCode")
-    public Map<String, Integer> sendCode(HttpServletRequest request) throws Exception {
+    public int sendCode(HttpServletRequest request) throws Exception {
         log.info(getClass().getName() + "sendCode start");
 
         Map<String, Integer> map = new HashMap<>();
@@ -196,12 +196,9 @@ public class UserRegController {
             log.info(this.getClass().getName() + " 인증코드 전송을 실패");
         }
 
-
-        map.put("code", res);
-
         log.info(getClass().getName() + "sendCode end");
 
-        return map;
+        return res;
     }
 
     /**

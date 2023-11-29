@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/AlarmService" />
     <file type="web" url="file://$PROJECT_DIR$/apiGateway" />
     <file type="web" url="file://$PROJECT_DIR$/ApiService" />
     <file type="web" url="file://$PROJECT_DIR$/AppManger" />
     <file type="web" url="file://$PROJECT_DIR$/EurekaServer" />
+    <file type="web" url="file://$PROJECT_DIR$/FaceService" />
     <file type="web" url="file://$PROJECT_DIR$/NoticeService" />
     <file type="web" url="file://$PROJECT_DIR$/PageService" />
     <file type="web" url="file://$PROJECT_DIR$/SpringConfigServer" />

@@ -7,6 +7,7 @@
 <meta name="keywords" content="airbnb, booking, city guide, directory, events, hotel booking, listings, marketing, places, restaurant, restaurant">
 <meta name="description" content="Guido - Directory & Listing HTML Template">
 <meta name="CreativeLayers" content="ATFN">
+	<meta name="referrer" content="strict-origin-when-cross-origin"/>
 <!-- css file -->
 <link rel="stylesheet" href="/css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/fileuploader.css">
@@ -15,7 +16,7 @@
 <!-- Responsive stylesheet -->
 <link rel="stylesheet" href="/css/responsive.css">
 	<!--폰트 적용-->
-<link rel="stylesheet" href="/fonts/font/mainFont.css">
+<!--<link rel="stylesheet" href="/fonts/font/mainFont.css">-->
 <!-- Title -->
 <title>로그인</title>
 <!-- Favicon -->
@@ -29,16 +30,79 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-	<style>
+
+	<script type="text/javascript" src="/js/common.js"></script>
+	<script src="/ajax/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
-	</style>
 </head>
 <body>
+
+
+<script type="text/javascript">
+
+	// if (location.search) {
+	// 	var urlWithoutParams = location.protocol + "//" + location.host + location.pathname;
+	// 	history.replaceState({}, document.title, urlWithoutParams);
+	// }
+
+	$(document).ready(function () {
+
+		// 로그인
+		$("#btnLogin").on("click", function () {
+			let f = document.getElementById("f"); // form 태그
+
+			if (f.userId.value === "") {
+				swal(title = "필수 항목 누락", msg = "아이디를 입력하세요.",state="warning");
+				f.userId.focus();
+				return;
+			}
+
+			if (f.password.value === "") {
+				swal(title = "필수 항목 누락", msg = "비밀번호를 입력하세요.",state="warning");
+				f.password.focus();
+				return;
+			}
+
+			// Ajax 호출해서 로그인하기
+			$.ajax({
+				url: protocol + apiServer + "/login/loginProc",
+				type: "POST", // 전송방식은 Post
+				dataType: "JSON", // 전송 결과는 JSON으로 받기
+				xhrFields: {
+					withCredentials: true
+				},
+				data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+				success: function (json) { // /notice/noticeUpdate 호출이 성공했다면..
+
+					console.log("json.result : " + json.result);
+
+					if (json.result === 1) { // 로그인 성공
+						swal(title = "로그인 성공", msg = json.msg ,state="success");
+						location.href = "/exception/main";
+
+					} else { // 로그인 실패
+						swal(title = "로그인 실패", msg = json.msg ,state="error");
+						$("#userId").focus(); // 아이디 입력 항목에 마우스 커서 이동
+					}
+
+
+				}
+			})
+		})
+	})
+
+
+</script>
+
 <div class="wrapper">
 	<div class="preloader"></div>
 	<!-- 헤더 파일 시작! -->
-	<th:block th:replace="header"></th:block>
+<!--	<th:block th:replace="header"></th:block>-->
 	<!-- 헤더 파일 종료! -->
 
 
@@ -60,15 +124,17 @@
 							<div class="col-lg-12">
 								<!-- <h2 class="mb30">Login</h2> -->
 								<div class="login_form inner_page">
-									<form style="padding-top: 10%;">
+									<form style="padding-top: 10%;" id="f">
 										<div class="input-group mb-2 mr-sm-2">
 											<input type="text" class="form-control" id="userId" name="userId" placeholder="아이디">
 										</div>
 										<div class="input-group form-group mb5">
-											<input type="password" class="form-control" id="userPwd" name="userPwd"placeholder="비밀번호">
+											<input type="password" class="form-control" id="password" name="password" placeholder="비밀번호">
 										</div>
 
-										<button type="submit" class="btn btn-log btn-block btn-thm">로그인</button>
+										<button type="button" class="btn btn-log btn-block btn-thm" id="btnLogin">로그인</button>
+
+
 										<button type="button" class="btn btn-log btn-block btn-thm" onclick="location.href='/user/userReg'">회원가입</button>
 										<hr>
 										<div class="row mt30">
@@ -180,7 +246,9 @@
 <a class="scrollToHome" href="#"><i class="fa fa-angle-up"></i></a>
 </div>
 <!-- Wrapper End -->
-<script src="/js/jquery-3.6.0.js"></script>
+<!--<script src="/js/jquery-3.6.0.js"></script>-->
+
+
 <script src="/js/jquery-migrate-3.0.0.min.js"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
@@ -201,8 +269,14 @@
 <script src="/js/wow.min.js"></script>
 <script src="/js/jquery.smartuploader.js"></script>
 <script src="/js/dashboard-script.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAz77U5XQuEME6TpftaMdX0bBelQxXRlM&callback=initMap"></script>
-<script src="/js/googlemaps1.js"></script>
+
+
+
+
+
+
+<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAz77U5XQuEME6TpftaMdX0bBelQxXRlM&callback=initMap"></script>-->
+<!--<script src="/js/googlemaps1.js"></script>-->
 <!-- Custom script for all pages --> 
 <script src="/js/script.js"></script>
 </body>

@@ -4,6 +4,15 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/AlarmService" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/AlarmService" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="delegatedBuild" value="false" />
         <option name="testRunner" value="PLATFORM" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
@@ -35,6 +44,15 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/EurekaServer" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/FaceService" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/FaceService" />
           </set>
         </option>
       </GradleProjectSettings>

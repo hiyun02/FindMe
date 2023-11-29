@@ -21,9 +21,9 @@ import java.util.Optional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"} //apiGateWay , FrontUI Port URL
-        , allowedHeaders = {"POST, GET"} // 전송 방식 타입 명시 필수
-        , allowCredentials = "true") // 리소스 요청 시 쿠키나 HTTP 인증과 같은 자격 증명을 허용할지 여부를 설정
+@CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"},
+        allowedHeaders = {"POST, GET"},
+        allowCredentials = "true")
 @Tag(name = "로그인 관련 API", description = "로그인 관련 API 설명입니다.") // Swagger 설명
 @Slf4j
 @RequestMapping(value = "/login")
@@ -130,11 +130,13 @@ public class LoginController {
         log.info(this.getClass().getName() + ".loginFail Start!");
 
         // 결과 메시지 전달하기
-        MsgDTO dto = MsgDTO.builder().result(1).msg("로그인이 실패하였습니다.").build();
+        MsgDTO dto = MsgDTO.builder().result(0).msg("로그인이 실패하였습니다.").build();
 
         log.info(this.getClass().getName() + ".loginFail End!");
 
         return dto;
 
     }
+
+
 }
