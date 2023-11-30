@@ -3,7 +3,9 @@ package kopo.poly.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import kopo.poly.dto.FaceAgingDTO;
 import kopo.poly.dto.FaceDTO;
+import kopo.poly.service.IFaceAgingService;
 import kopo.poly.service.IFaceRecService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,18 +14,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST"}, allowCredentials = "true")
-@Tag(name = "NUGU-FaceRecognize 서비스", description = "입력된 이미지를 관리 중인 Face 정보와 비교함")
+@Tag(name = "SAM-FaceAging 서비스", description = "입력된 이미지와 추정 나이를 기반으로 예측 이미지 생성")
 @Slf4j
-@RequestMapping(value = "/facecan/faceRec")
+@RequestMapping(value = "/SAM")
 @RequiredArgsConstructor
 @RestController
-public class FaceRecController {
+public class FaceAgingController {
 
-    private final IFaceRecService faceRecService;
+    private final IFaceAgingService faceAgingService;
 
     /**
-     * 얼굴 유사도 분석하기
-     * @return 분석 결과 리스트
+     * 서브젝트 조회하기
+     * @return 서브젝트 리스트
      * @throws Exception
      */
     @Operation(summary = "Group 내 Face 유사도 분석", description = "지정 Group 속 Face 정보들과 입력된 이미지의 유사도를 추출하여 반환함"
@@ -31,18 +33,17 @@ public class FaceRecController {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
-    @PostMapping(value = "")
-    public List<FaceDTO> getRecognizedList(@RequestBody FaceDTO pDTO) throws Exception {
+    @PostMapping(value = "agingPredict")
+    public FaceAgingDTO getAgedFaceInfo(@RequestBody FaceAgingDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".getRecognizedList Start! ");
+        log.info(this.getClass().getName() + ".getAgedFaceImage Start! ");
 
-        log.info("비교를 진행할 대상 Group 아이디 : " + pDTO.group_id());
-        List<FaceDTO> rList = faceRecService.getRecognizedList(pDTO);
-        log.info("유사도 비교 분석 결과 Face 개수 : " + rList.size());
+        log.info("aging data : "+pDTO.toString());
+        FaceAgingDTO rDTO = faceAgingService.getAgedFaceImage(pDTO);
 
-        log.info(this.getClass().getName() + ".getRecognizedList End! ");
+        log.info(this.getClass().getName() + ".getAgedFaceImage End! ");
 
-        return rList;
+        return rDTO;
     }
 
 }

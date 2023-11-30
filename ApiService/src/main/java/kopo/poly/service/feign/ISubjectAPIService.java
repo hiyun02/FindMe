@@ -30,7 +30,7 @@ public interface ISubjectAPIService {
     @GetMapping (value = "/",
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE
     )
-    FaceDTO getSubject(
+    List<FaceDTO> getSubject(
             @RequestHeader("group-id") String group_id,
             @RequestHeader("subject-name") String subject_name
     );

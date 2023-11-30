@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST, GET, DELETE"}, allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST"}, allowCredentials = "true")
 @Tag(name = "NUGU-Subject 서비스", description = "얼굴 정보의 주인 구분을 위한 Subject API")
 @Slf4j
 @RequestMapping(value = "/facecan/subject")
@@ -33,14 +33,14 @@ public class SubjectController {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
-    @GetMapping(value = "getAll")
-    public List<FaceDTO> getSubjectList(@ModelAttribute FaceDTO pDTO) throws Exception {
+    @PostMapping(value = "getAll")
+    public List<FaceDTO> getSubjectList(@RequestBody FaceDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".getSubjectList Start! ");
 
-        log.info("조회할 Subject의 Group 아이디 : ", pDTO.group_id());
+        log.info("조회할 Subject의 Group 아이디 : " + pDTO.group_id());
         List<FaceDTO> rList = subjectService.getSubjectList(pDTO);
-        log.info("조회된 Subject 개수 : ", rList.size());
+        log.info("조회된 Subject 개수 : " + rList.size());
 
         log.info(this.getClass().getName() + ".getSubjectList End! ");
 
@@ -58,13 +58,13 @@ public class SubjectController {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
-    @GetMapping(value = "getOne")
-    public FaceDTO getSubject(FaceDTO pDTO) throws Exception {
+    @PostMapping(value = "getOne")
+    public FaceDTO getSubject(@RequestBody FaceDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".getSubjectList Start! ");
 
-        log.info("조회할 Subject의 Group 아이디 : ", pDTO.group_id());
-        log.info("조회할 subject 이름 : ", pDTO.subject_name());
+        log.info("조회할 Subject의 Group 아이디 : " + pDTO.group_id());
+        log.info("조회할 subject 이름 : " + pDTO.subject_name());
         FaceDTO faceDTO = subjectService.getSubject(pDTO);
 
         log.info(this.getClass().getName() + ".getSubjectList End! ");
@@ -84,12 +84,12 @@ public class SubjectController {
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
     @PostMapping(value = "create")
-    public FaceDTO createSubject(@ModelAttribute FaceDTO pDTO) throws Exception {
+    public FaceDTO createSubject(@RequestBody FaceDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".createSubject Start! ");
 
-        log.info("등록할 Subject의 Group 아이디 : ", pDTO.group_id());
-        log.info("등록할 Subejct 명 : ", pDTO.face_name());
+        log.info("등록할 Subject의 Group 아이디 : " + pDTO.group_id());
+        log.info("등록할 Subejct 명 : " + pDTO.face_name());
         FaceDTO faceDTO = subjectService.createSubject(pDTO);
 
         log.info(this.getClass().getName() + ".createSubject End! ");
@@ -108,8 +108,8 @@ public class SubjectController {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
-    @GetMapping(value = "delete")
-    public int deleteSubject(@ModelAttribute FaceDTO faceDTO) throws Exception {
+    @PostMapping(value = "delete")
+    public int deleteSubject(@RequestBody FaceDTO faceDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".deleteSubject Start! ");
         log.info(this.getClass().getName() + ".deleteSubject Start! ");

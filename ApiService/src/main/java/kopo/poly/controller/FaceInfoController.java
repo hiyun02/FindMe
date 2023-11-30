@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST, GET, DELETE"}, allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST"}, allowCredentials = "true")
 @Tag(name = "NUGU-Face 서비스", description = "얼굴 이미지 Face API")
 @Slf4j
 @RequestMapping(value = "/facecan/faceInfo")
@@ -31,15 +31,15 @@ public class FaceInfoController {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
-    @GetMapping(value = "list")
-    public List<FaceDTO> getFaceList(@ModelAttribute FaceDTO pDTO) throws Exception {
+    @PostMapping(value = "getFaceList")
+    public List<FaceDTO> getFaceList(@RequestBody FaceDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".getFaceList Start! ");
 
-        log.info("조회할 Face 정보의 소속 Group 아이디 : ", pDTO.group_id());
-        log.info("조회할 Face 정보의 소속 Subejct 아이디 : ", pDTO.subject_id());
+        log.info("조회할 Face 정보의 소속 Group 아이디 : " + pDTO.group_id());
+        log.info("조회할 Face 정보의 소속 Subject 아이디 : " + pDTO.subject_id());
         List<FaceDTO> rList = faceInfoService.getFaceList(pDTO);
-        log.info("조회된 Face 개수 : ", rList.size());
+        log.info("조회된 Face 개수 : " + rList.size());
 
         log.info(this.getClass().getName() + ".getFaceList End! ");
 
@@ -57,13 +57,13 @@ public class FaceInfoController {
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
     @PostMapping(value = "create")
-    public FaceDTO createFace(@ModelAttribute FaceDTO pDTO) throws Exception {
+    public FaceDTO createFace(@RequestBody FaceDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".createFace Start! ");
 
-        log.info("등록할 Face의 Group 아이디 : ", pDTO.group_id());
-        log.info("등록할 Face의 Subejct 아이디 : ", pDTO.subject_id());
-        log.info("등록할 Face 이름 : ", pDTO.face_name());
+        log.info("등록할 Face의 Group 아이디 : " + pDTO.group_id());
+        log.info("등록할 Face의 Subejct 아이디 : " + pDTO.subject_id());
+        log.info("등록할 Face 이름 : " + pDTO.face_name());
         FaceDTO faceDTO = faceInfoService.createFace(pDTO);
 
         log.info(this.getClass().getName() + ".createFace End! ");
@@ -81,15 +81,15 @@ public class FaceInfoController {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
-    @GetMapping(value = "delete")
-    public int deleteFace(@ModelAttribute FaceDTO pDTO) throws Exception {
+    @PostMapping(value = "delete")
+    public int deleteFace(@RequestBody FaceDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".deleteFace Start! ");
 
         int res = 0;
-        log.info("삭제할 Face의 소속 Group 아이디 : ", pDTO.group_id());
-        log.info("삭제할 Face의 소속 Subject 아이디 : ", pDTO.subject_id());
-        log.info("삭제할 Face 아이디 : ", pDTO.face_id());
+        log.info("삭제할 Face의 소속 Group 아이디 : " + pDTO.group_id());
+        log.info("삭제할 Face의 소속 Subject 아이디 : " + pDTO.subject_id());
+        log.info("삭제할 Face 아이디 : " + pDTO.face_id());
         faceInfoService.deleteFace(pDTO);
         res = 1; //성공 시 1 반환
 

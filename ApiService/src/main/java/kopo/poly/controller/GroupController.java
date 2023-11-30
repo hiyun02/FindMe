@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST, GET, DELETE"}, allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST, GET"}, allowCredentials = "true")
 @Tag(name = "NUGU-Group 서비스", description = "사람 얼굴 정보 그룹 API")
 @Slf4j
 @RequestMapping(value = "/facecan/group")
@@ -43,7 +43,7 @@ public class GroupController {
         log.info(this.getClass().getName() + ".getGroupList Start! ");
 
         List<FaceDTO> rList = groupService.getGroupList();
-        log.info("조회된 Group 개수 : ", rList);
+        log.info("조회된 Group 개수 : " + rList.size());
 
         log.info(this.getClass().getName() + ".getGroupList End! ");
         return rList;
@@ -61,10 +61,11 @@ public class GroupController {
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
     @PostMapping(value = "create")
-    public FaceDTO createGroup(@ModelAttribute FaceDTO faceDTO) throws Exception {
+    public FaceDTO createGroup(@RequestBody FaceDTO faceDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".createGroup Start! ");
 
+        log.info("group_name : " + faceDTO.group_name());
         FaceDTO pDTO = groupService.createGroup(faceDTO);
 
         log.info(this.getClass().getName() + ".createGroup End! ");
@@ -83,13 +84,13 @@ public class GroupController {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
-    @GetMapping(value = "delete")
-    public int deleteGroup(@ModelAttribute FaceDTO faceDTO) throws Exception {
+    @PostMapping(value = "delete")
+    public int deleteGroup(@RequestBody FaceDTO faceDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".deleteGroup Start! ");
 
         int res = 0;
-
+        log.info("group_id : " + faceDTO.group_id());
         groupService.deleteGroup(faceDTO);
 
         res = 1; //성공 시 1 반환
@@ -98,7 +99,6 @@ public class GroupController {
 
         return res;
     }
-
 
 
 }

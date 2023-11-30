@@ -23,12 +23,12 @@ public class SubjectService implements ISubjectService {
 
         log.info(this.getClass().getName() + ".getSubjectList Start!");
 
-        List<FaceDTO> SubjectList = Optional.ofNullable(subjectAPIService
+        List<FaceDTO> subjectList = Optional.ofNullable(subjectAPIService
                 .getSubjectList(pDTO.group_id())).orElse(new ArrayList<>());
 
         log.info(this.getClass().getName() + ".getSubjectList Start!");
 
-        return SubjectList;
+        return subjectList;
     }
 
     @Override
@@ -36,12 +36,13 @@ public class SubjectService implements ISubjectService {
 
         log.info(this.getClass().getName() + ".getSubjectList Start!");
 
-        FaceDTO subjectDTO = Optional.ofNullable(subjectAPIService
-                .getSubject(pDTO.group_id(), pDTO.subject_name())).orElse(FaceDTO.builder().build());
+        List<FaceDTO> subjectList = Optional.ofNullable(subjectAPIService
+                .getSubject(pDTO.group_id(), pDTO.subject_name())).orElse(new ArrayList<>());
 
+        log.info("조회 결과 : " + subjectList.size());
         log.info(this.getClass().getName() + ".getSubjectList Start!");
 
-        return subjectDTO;
+        return subjectList.get(0);
     }
 
     @Override

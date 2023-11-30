@@ -27,18 +27,18 @@ public record FaceDTO(
         String face_id, // 이미지 식별자
         String face_name, // 이미지 이름
         FaceBoxDTO Box, // 이미지 상에서의 얼굴 위치
-        double face_score, // 얼굴에 대한 Confidence Value
+        Double face_score, // 얼굴에 대한 Confidence Value
         String expression, // 인간의 기본적인 6가지 감정을 토대로 top-1 표정 리턴
-        double expression_score, // 감지된 표정에 대한 Confidence Value
-        float age, // 사진을 통해 유추한 나이(apparent age)
+        Double expression_score, // 감지된 표정에 대한 Confidence Value
+        Float age, // 사진을 통해 유추한 나이(apparent age)
         String gender, // 예측한 성별, 아이의 경우 unknown 리턴
         String attribute, // 안경, 마스크 착용여부 등등...
-        int image_width, // 이미지 너비
-        int image_height, // 이미지 높이
-        int engine_version, // 인식 엔진의 버전
+        Integer image_width, // 이미지 너비
+        Integer image_height, // 이미지 높이
+        Integer engine_version, // 인식 엔진의 버전
 
         //---Face Recognize---
-        double threshold,
+        Double threshold,
 //      threshold : 0 인 경우 동일인물, 1 인 경우 다른 인물에 가까움
 //      Default : 0.32
 //      특정 Site 마다 threshold 를 조절하여 precision, recall tuning 가능
@@ -48,11 +48,7 @@ public record FaceDTO(
         FaceBoxDTO face_box, // 인식된 얼굴의 이미지 상에서의 위치
 //      각 표정에 대한 Confidence Value (fear, surprised, neutral, angry, smile, sad, etc)
         Map<String, Double> expression_raw,
-        String transaction_id, // 해당 결과에 대한 식별 ID
+        String transaction_id // 해당 결과에 대한 식별 ID
 
-        //---Face Aging---
-        String imagePath,
-        String targetAge,
-        List<Map<String, String>> output
 ) {
 }
