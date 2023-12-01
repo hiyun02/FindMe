@@ -14,7 +14,7 @@ import java.util.List;
 @CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST"}, allowCredentials = "true")
 @Tag(name = "NUGU-FaceRecognize 서비스", description = "입력된 이미지를 관리 중인 Face 정보와 비교함")
 @Slf4j
-@RequestMapping(value = "/facecan/faceRec")
+@RequestMapping(value = "/face/nugu/faceRec")
 @RequiredArgsConstructor
 @RestController
 public class FaceRecController {

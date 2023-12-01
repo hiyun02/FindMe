@@ -1,6 +1,8 @@
 package kopo.poly.config;
 
 import feign.Logger;
+import feign.RequestInterceptor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,8 +10,22 @@ import org.springframework.context.annotation.Configuration;
 public class OpenFeignConfig {
 
 
+    @Value("${nugu.api.appId}")
+    private String appId;
 
+    @Value("${nugu.api.appKey}")
+    private String appKey;
 
+    //Sk nugu facecan API를 위한 공통 요청 헤더
+    @Bean
+    public RequestInterceptor requestInterceptor() {
+
+        return requestTemplate -> {
+            requestTemplate.header("Accept", "application/json");
+            requestTemplate.header("app-id", appId);
+            requestTemplate.header("appKey", appKey);
+        };
+    }
 
     @Bean
     Logger.Level feignLoggerLevel() {

@@ -1,9 +1,8 @@
 package kopo.poly.service.impl;
 
-import kopo.poly.dto.FaceAgingDTO;
-import kopo.poly.dto.FaceDTO;
-import kopo.poly.service.IFaceAgingService;
-import kopo.poly.service.feign.IFaceAgingAPIService;
+import kopo.poly.dto.AgingDTO;
+import kopo.poly.service.IAgingService;
+import kopo.poly.service.feign.IAgingAPIService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,16 +14,16 @@ import java.util.Map;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FaceAgingService implements IFaceAgingService {
+public class AgingService implements IAgingService {
 
-    private final IFaceAgingAPIService faceAgingAPIService;
+    private final IAgingAPIService faceAgingAPIService;
 
     private final String contentType = "application/json";
     private final String authorization = "Token r8_UVUkgDcvLjLpeUdO7i0cGKUC77V8BrK3FsK5D";
     private final String version = "9222a21c181b707209ef12b5e0d7e94c994b58f01c7b2fec075d2e892362f13c";
 
     @Override
-    public FaceAgingDTO getAgedFaceImage(FaceAgingDTO pDTO) throws Exception {
+    public AgingDTO getAgedFaceImage(AgingDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".getAgedFaceImage Start!");
 
@@ -37,7 +36,7 @@ public class FaceAgingService implements IFaceAgingService {
         input.put("image", image);
         input.put("target_age", targetAge);
 
-        FaceAgingDTO agedDTO = faceAgingAPIService.getAgedFaceImage(
+        AgingDTO agedDTO = faceAgingAPIService.getAgedFaceImage(
                 contentType, authorization, version, input
         );
 

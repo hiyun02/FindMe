@@ -2,10 +2,8 @@ package kopo.poly.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Map;
 
 // SK Open API 제공 Nugu API 사용을 위한 FaceDTO.

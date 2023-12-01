@@ -12,29 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenFeignConfig {
 
-
-
-    @Value("${policeApi.esntlId}")
-    private String esntlId;
-
-    @Value("${policeApi.authKey}")
-    private String authKey;
-
-    private String appId = "PEJ4G2LMAX";
-    private String appKey = "mJdVZjHDHE22UKZwQmedA1KALvDDBu2AaU8TR2kc";
-
-    @Bean
-    public RequestInterceptor requestInterceptor() {
-
-        return requestTemplate -> {
-            requestTemplate.header("Accept", "application/json");
-            requestTemplate.header("app-id", appId);
-            requestTemplate.header("appKey", appKey);
-        };
-    }
-
-
-
     @Bean
     Logger.Level feignLoggerLevel() {
 

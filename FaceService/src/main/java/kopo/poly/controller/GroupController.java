@@ -3,23 +3,18 @@ package kopo.poly.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import kopo.poly.dto.FaceDTO;
-import kopo.poly.dto.WarnDTO;
-import kopo.poly.service.IApiService;
 import kopo.poly.service.IGroupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST, GET"}, allowCredentials = "true")
 @Tag(name = "NUGU-Group 서비스", description = "사람 얼굴 정보 그룹 API")
 @Slf4j
-@RequestMapping(value = "/facecan/group")
+@RequestMapping(value = "/face/nugu/group")
 @RequiredArgsConstructor
 @RestController
 public class GroupController {

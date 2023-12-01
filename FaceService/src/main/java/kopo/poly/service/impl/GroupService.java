@@ -3,10 +3,8 @@ package kopo.poly.service.impl;
 import kopo.poly.dto.FaceDTO;
 import kopo.poly.service.IGroupService;
 import kopo.poly.service.feign.IGroupAPIService;
-import kopo.poly.service.feign.IPoliceApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

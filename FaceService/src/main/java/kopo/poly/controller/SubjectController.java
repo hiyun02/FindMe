@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kopo.poly.dto.FaceDTO;
-import kopo.poly.service.IGroupService;
 import kopo.poly.service.ISubjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,7 @@ import java.util.List;
 @CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST"}, allowCredentials = "true")
 @Tag(name = "NUGU-Subject 서비스", description = "얼굴 정보의 주인 구분을 위한 Subject API")
 @Slf4j
-@RequestMapping(value = "/facecan/subject")
+@RequestMapping(value = "/face/nugu/subject")
 @RequiredArgsConstructor
 @RestController
 public class SubjectController {
