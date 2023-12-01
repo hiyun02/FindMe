@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequestMapping(value = "/police")
 @RequiredArgsConstructor
 @RestController
-public class ApiController {
+public class PoliceController {
 
     private final IApiService apiService;
 

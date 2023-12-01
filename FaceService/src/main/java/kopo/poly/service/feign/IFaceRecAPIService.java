@@ -6,6 +6,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,13 +21,13 @@ public interface IFaceRecAPIService {
      * @return 주어진 Face image와 닮은 Subject(사람) 리스트를 반환
      */
       @PostMapping(value = "/",
-              consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE
+              consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE
       )
       List<FaceDTO> getRecognizedList(
               @RequestHeader("group-id") String group_id,
               @RequestHeader("threshold") double threshold,
               @RequestHeader("multi") int multi,
-              @RequestParam("image") String image
+              @RequestPart("image") MultipartFile image
               );
 
 }

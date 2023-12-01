@@ -4,6 +4,7 @@ import kopo.poly.dto.FaceDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -33,13 +34,13 @@ public interface IFaceInfoAPIService {
      * @return face 생성
      */
       @PostMapping(value = "/",
-              consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE
+              consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE
       )
       FaceDTO createFace(
               @RequestHeader("group-id") String group_id,
               @RequestHeader("subject-id") String subject_id,
               @RequestHeader("face-name") String face_name,
-              @RequestParam("image") String image
+              @RequestPart("image") MultipartFile image
               );
 
     /**

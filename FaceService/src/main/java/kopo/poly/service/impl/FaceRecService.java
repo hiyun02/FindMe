@@ -24,7 +24,7 @@ public class FaceRecService implements IFaceRecService {
         log.info(this.getClass().getName() + ".getRecognizeList Start!");
 
         List<FaceDTO> recognizedFaceList = Optional.ofNullable(recAPIService
-                .getRecognizedList(pDTO.group_id(), 0.32, 0, "image"))
+                .getRecognizedList(pDTO.group_id(), 0.32, 0, pDTO.image()))
                 .orElse(new ArrayList<>());
 
         log.info(this.getClass().getName() + ".getRecognizeList Start!");

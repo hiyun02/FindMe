@@ -37,7 +37,7 @@ public class FaceInfoService implements IFaceInfoService {
         log.info(this.getClass().getName() + ".createSubject Start!");
 
         FaceDTO faceDTO = Optional.ofNullable(faceInfoAPIService
-                .createFace(pDTO.group_id(), pDTO.subject_id(), pDTO.face_name(), "image"))
+                .createFace(pDTO.group_id(), pDTO.subject_id(), pDTO.face_name(), pDTO.image()))
                 .orElse(FaceDTO.builder().build());
 
         log.info(this.getClass().getName() + ".createSubject Start!");

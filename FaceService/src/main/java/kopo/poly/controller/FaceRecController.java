@@ -7,7 +7,9 @@ import kopo.poly.dto.FaceDTO;
 import kopo.poly.service.IFaceRecService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,12 +33,21 @@ public class FaceRecController {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
-    @PostMapping(value = "")
-    public List<FaceDTO> getRecognizedList(@RequestBody FaceDTO pDTO) throws Exception {
+    @PostMapping(value = "",
+            consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public List<FaceDTO> getRecognizedList(@RequestPart FaceDTO faceDTO,
+                                           @RequestPart MultipartFile multipartFile) throws Exception {
 
         log.info(this.getClass().getName() + ".getRecognizedList Start! ");
 
-        log.info("비교를 진행할 대상 Group 아이디 : " + pDTO.group_id());
+        log.info("비교를 진행할 대상 Group 아이디 : " + faceDTO.group_id());
+        log.info("유사도 분석 기준 Face 이미지 : " + multipartFile);
+
+        FaceDTO pDTO = FaceDTO.builder()
+                .group_id(faceDTO.group_id())
+                .image(multipartFile)
+                .build();
+
         List<FaceDTO> rList = faceRecService.getRecognizedList(pDTO);
         log.info("유사도 비교 분석 결과 Face 개수 : " + rList.size());
 
