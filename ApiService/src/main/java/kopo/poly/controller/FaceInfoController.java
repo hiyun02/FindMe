@@ -7,7 +7,9 @@ import kopo.poly.dto.FaceDTO;
 import kopo.poly.service.IFaceInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -56,19 +58,27 @@ public class FaceInfoController {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
-    @PostMapping(value = "create")
-    public FaceDTO createFace(@RequestBody FaceDTO pDTO) throws Exception {
+    @PostMapping(value = "create",
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public FaceDTO createFace(@RequestPart FaceDTO faceDTO,
+                              @RequestPart MultipartFile multipartFile) throws Exception {
 
         log.info(this.getClass().getName() + ".createFace Start! ");
 
-        log.info("등록할 Face의 Group 아이디 : " + pDTO.group_id());
-        log.info("등록할 Face의 Subejct 아이디 : " + pDTO.subject_id());
-        log.info("등록할 Face 이름 : " + pDTO.face_name());
-        FaceDTO faceDTO = faceInfoService.createFace(pDTO);
+        log.info("등록할 Face의 Group 아이디 : " + faceDTO.group_id());
+        log.info("등록할 Face의 Subject 아이디 : " + faceDTO.subject_id());
+        log.info("등록할 Face 이름 : " + faceDTO.face_name());
+        log.info("등록할 Face 이미지 : " + multipartFile);
+
+        FaceDTO pDTO = FaceDTO.builder().group_id(faceDTO.group_id())
+                .subject_id(faceDTO.subject_id()).face_name(faceDTO.face_name())
+                .image(multipartFile).build();
+
+        FaceDTO rDTO = faceInfoService.createFace(pDTO);
 
         log.info(this.getClass().getName() + ".createFace End! ");
 
-        return faceDTO;
+        return rDTO;
     }
 
     /**
