@@ -14,7 +14,7 @@ import java.util.Optional;
 @CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST, GET"}, allowCredentials = "true")
 @Tag(name = "API 서비스", description = "경찰청 실종 정보를 위한 API")
 @Slf4j
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/police")
 @RequiredArgsConstructor
 @RestController
 public class ApiController {

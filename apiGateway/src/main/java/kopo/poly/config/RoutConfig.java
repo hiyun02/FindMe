@@ -28,16 +28,14 @@ public class RoutConfig {
         ).route(r -> r.path("/reg/**") // 회원가입 => 로그인이 필요하지 않는 서비스를 별로 URL로 분리
                 .uri("lb://USER-SERVICE:11000") // 연결될 서버 주소
 
-        ).route(r -> r.path("/api/**") // Api 가져오는 서비스
+        ).route(r -> r.path("/police/**") // 경찰청 API 가져오는 서비스
                 .uri("lb://API-SERVICE:16000") // 연결될 서버 주소
 
         ).route(r -> r.path("/face/**") // skOpenApi 얼굴 인식 서버
                 .uri("lb://FACE-SERVICE:17000") // 연결될 서버 주소
 
-
         ).route(r -> r.path("/alarm/**") // ALARM 가져오는 서비스
                 .uri("lb://ALARM-SERVICE:18000") // 연결될 서버 주소
-
 
         ).build();
     }

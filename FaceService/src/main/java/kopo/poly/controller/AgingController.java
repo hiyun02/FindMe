@@ -29,7 +29,7 @@ public class AgingController {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
-    @PostMapping(value = "agingPredict")
+    @PostMapping(value = "predict")
     public AgingDTO getAgedFaceInfo(@RequestBody AgingDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".getAgedFaceImage Start! ");
