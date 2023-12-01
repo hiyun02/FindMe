@@ -70,6 +70,8 @@ public class AlarmController {
         log.info("res : " + res);
         if (res == 1) {
             log.info("저장 성공");
+        } else if (res == 2) {
+            log.info("이미 있는 토큰 값");
         } else {
             log.info("저장 실패");
         }
@@ -100,6 +102,9 @@ public class AlarmController {
         AlarmMsgDTO pDTO = AlarmMsgDTO.builder()
                 .deviceDTO(deviceDTO)
                 .userId(userId)
+                .title("제목입니다.")
+                .content("내용입니다")
+                .url("https://www.naver.com/")
                 .build();
 
         int res = alarmService.sendMessing(pDTO);
@@ -115,7 +120,6 @@ public class AlarmController {
      * @return 기기의 토큰값이 있는 List
      * @throws Exception
      */
-    @PostMapping("getDevice")
     private List<String> getDevice(String userId)throws Exception {
         log.info(getClass().getName() + "사용자의 기기 가져오기 시작");
 
@@ -131,27 +135,41 @@ public class AlarmController {
     /**
      * 사용자 알람 조회 함수 만들기
      */
+    @PostMapping(value = "getAlarmList")
+    public List<AlarmMsgDTO> getAlarmList(@CookieValue(value = "${jwt.token.access.name}") String token)throws Exception {
+        log.info(getClass().getName() + "알람 내역 가져오기 시작");
+
+        TokenDTO tDTO = tokenAPIService.getTokenInfo(HEADER_PREFIX +token);
+        log.info("TokenDTO : " + tDTO);
+
+        String userId = CmmUtil.nvl(tDTO.userId()); // token 에서 추출한 Id값
+        List<AlarmMsgDTO> rList =alarmService.getAlarmList(userId);
+
+        log.info(getClass().getName() + "알람 내역 가져오기 종료");
+        return rList;
+    }
 
 
 
     /**
      *  사용자의 과거 알람 전체 삭제
-     * @param request
-     * @return
-     * @throws Exception
+
      */
 
     @PostMapping("deleteAllAlarm")
-    public int deleteAllAlarm(HttpServletRequest request) throws Exception {
+    public int deleteAllAlarm(@CookieValue(value = "${jwt.token.access.name}") String token) throws Exception {
         log.info(getClass().getName() + "토큰 저장 시작");
 
+        TokenDTO tDTO = tokenAPIService.getTokenInfo(HEADER_PREFIX +token);
+        log.info("TokenDTO : " + tDTO);
 
-        //
-        AlarmMsgDTO pDTO = AlarmMsgDTO.builder().build();
+        String userId = CmmUtil.nvl(tDTO.userId()); // token 에서 추출한 Id값
+
+        int res = alarmService.deleteAllAlarm(userId);
 
         log.info(getClass().getName() + "토큰 저장 종료");
 
-        return 0;
+        return res;
     }
 
 
@@ -162,16 +180,21 @@ public class AlarmController {
      * @throws Exception
      */
 
-    @PostMapping("deleteAlarm")
-    public int deleteAlarm(HttpServletRequest request) throws Exception {
+    @PostMapping("deleteOneAlarm")
+    public int deleteOneAlarm(HttpServletRequest request) throws Exception {
         log.info(getClass().getName() + "토큰 저장 시작");
 
 
-        //
-        AlarmMsgDTO pDTO = AlarmMsgDTO.builder().build();
+        String seq = CmmUtil.nvl(request.getParameter("Seq"));
+
+        int res = alarmService.deleteOneAlarm(seq);
 
         log.info(getClass().getName() + "토큰 저장 종료");
 
-        return 0;
+        return res;
     }
+
+
+
+
 }
