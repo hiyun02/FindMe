@@ -8,21 +8,21 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ALARM_DEVICE")
+@Table(name = "DEVICE")
 @DynamicInsert
 @DynamicUpdate
 @Builder
 @Cacheable
 @Entity
-public class AlarmDeviceEntity {
+public class DeviceEntity {
 
-    @Id //회원 아이디
-    @Column(name = "USER_ID")
-    private String userId;
-
-    @NonNull //기기 알림 Token
-    @Column(name = "PUSH_TOKEN", nullable = false)
+    @Id //기기 알림 Token
+    @Column(name = "PUSH_TOKEN")
     private String pushToken;
+
+    @NonNull //회원 아이디
+    @Column(name = "USER_ID", nullable = false)
+    private String userId;
 
     @NonNull // Token 최근 사용 날짜
     @Column(name = "DEVICE_DATE", nullable = false)
