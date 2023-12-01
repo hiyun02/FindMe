@@ -38,7 +38,7 @@ public class AlarmMsgEntity {
     @Column(name = "CONTENT", nullable = false)
     private String content;
 
-    @NonNull // Token 최근 사용 날짜
+    @NonNull //알람 시간
     @Column(name = "MSG_TIME", nullable = false)
     private String msgTime;
 

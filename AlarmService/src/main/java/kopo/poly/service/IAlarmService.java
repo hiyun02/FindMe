@@ -16,4 +16,13 @@ public interface IAlarmService {
 
     // 메세지 보내기
     int sendMessing(AlarmMsgDTO pDTO)throws Exception;
+
+    // 알람내역 가져오기
+    List<AlarmMsgDTO> getAlarmList(String userId)throws Exception;
+
+    // 알람 전체 지우기
+    int deleteAllAlarm(String userId)throws Exception;
+
+    // 알람 단일 지우기
+    int deleteOneAlarm(String seq)throws Exception;
 }

@@ -8,4 +8,5 @@ import java.util.List;
 public interface AlarmDeviceRepository extends JpaRepository<DeviceEntity, String> {
 
     List<DeviceEntity> findAllByUserId(String userId);
+
 }
