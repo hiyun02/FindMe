@@ -49,6 +49,7 @@ public class WarnApiEntity {
     @Column(name = "occr_adres",  nullable = false)
     private String occrAdres; // 발생장소
 
+
     @NonNull
     @Column(name = "nm",  nullable = false)
     private String nm; //성명

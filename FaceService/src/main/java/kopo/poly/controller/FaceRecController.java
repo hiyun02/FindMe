@@ -20,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 public class FaceRecController {
-
     private final IFaceRecService faceRecService;
 
     /**
