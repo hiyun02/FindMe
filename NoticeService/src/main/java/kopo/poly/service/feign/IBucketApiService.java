@@ -5,12 +5,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-@FeignClient(name = "PoliceApiService", url = "https://www.safe182.go.kr")
+@FeignClient(name = "PoliceApiService", url = "http://localhost:17000")
 public interface IBucketApiService {
 
     /**
-     *
      * https://www.safe182.go.kr/home/api/guide3.do
      * 실종 경보 API
      * @param esntlId 고유아이디
@@ -28,7 +26,6 @@ public interface IBucketApiService {
     );
 
     /**
-     *
      * https://www.safe182.go.kr/home/api/guide5.do
      * 실종 검색 API
      * @param esntlId 고유아이디
@@ -44,7 +41,5 @@ public interface IBucketApiService {
             @RequestParam ("rowSize")  int rowSize,
             @RequestParam ("page")  int page
     );
-
-
 
 }

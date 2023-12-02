@@ -10,7 +10,7 @@ import kopo.poly.repository.AlarmMsgRepository;
 import kopo.poly.repository.entity.AlarmMsgEntity;
 import kopo.poly.repository.entity.DeviceEntity;
 import kopo.poly.service.IAlarmService;
-import kopo.poly.service.IPushService;
+import kopo.poly.service.feign.IPushAPIService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class AlarmService implements IAlarmService {
 
     private final AlarmMsgRepository alarmMsgRepository;
 
-    private final IPushService pushService;
+    private final IPushAPIService pushService;
 
     @Override
     @Transactional

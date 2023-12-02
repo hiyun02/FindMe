@@ -1,4 +1,4 @@
-package kopo.poly.service;
+package kopo.poly.service.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -8,12 +8,7 @@ import java.util.List;
 
 
 @FeignClient(name = "PushService", url = "https://api.flarelane.com")
-public interface IPushService {
-
-
-
-
-
+public interface IPushAPIService {
 
     /**
      *

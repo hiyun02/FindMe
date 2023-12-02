@@ -45,6 +45,7 @@ public class NoticeController {
     public List<NoticeDTO> noticeList() {
 
         log.info(this.getClass().getName() + ".noticeList Start!");
+
         List<NoticeDTO> rList = Optional.ofNullable(noticeService.getNoticeList()).orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".noticeList End!");

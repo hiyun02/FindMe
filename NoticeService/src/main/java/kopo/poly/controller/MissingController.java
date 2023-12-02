@@ -61,13 +61,13 @@ public class MissingController {
             TokenDTO tDTO = tokenAPIService.getTokenInfo(HEADER_PREFIX + token);
             log.info("TokenDTO : " + tDTO);
 
-//            이미지 버킷 업로드
-//            subject 생성
-//            subject id를 가지고 face 생성
-//            이미지 url. subject_id, subject_name을 포함시키기
-//            noticeService.insertNoticeInfo(missingDTO);
+//          이미지 버킷 업로드
+//          subject 생성
+//          subject id를 가지고 face 생성
+//          이미지 url. subject_id, subject_name을 포함시키기
+//          noticeService.insertNoticeInfo(missingDTO);
+//          등록 결과 및 메시지
 
-            //등록 결과 및 메시지
             msg = "등록되었습니다.";
             res = 1;
 
@@ -88,7 +88,6 @@ public class MissingController {
     /**
      * 공지사항 리스트 조회
      */
-
     @Operation(summary = "공지사항 리스트 API", description = "공지사항 리스트 정보 제공하는 API"
             , responses = {
             @ApiResponse(responseCode = "200", description = "OK"),

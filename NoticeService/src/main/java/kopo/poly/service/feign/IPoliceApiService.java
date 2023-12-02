@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface IPoliceApiService {
 
     /**
-     *
      * https://www.safe182.go.kr/home/api/guide3.do
      * 실종 경보 API
      * @param esntlId 고유아이디
@@ -28,7 +27,6 @@ public interface IPoliceApiService {
     );
 
     /**
-     *
      * https://www.safe182.go.kr/home/api/guide5.do
      * 실종 검색 API
      * @param esntlId 고유아이디
