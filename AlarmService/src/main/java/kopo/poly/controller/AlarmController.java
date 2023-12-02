@@ -1,5 +1,8 @@
 package kopo.poly.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import kopo.poly.dto.AlarmMsgDTO;
 import kopo.poly.dto.DeviceDTO;
@@ -9,15 +12,17 @@ import kopo.poly.service.ITokenAPIService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+@CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"},
+        allowedHeaders = {"POST, GET"},
+        allowCredentials = "true")
+@Tag(name = "알람 관련 API", description = "알람 관련 API 설명입니다.") // Swagger 설명
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -30,18 +35,22 @@ public class AlarmController {
 
     private final String HEADER_PREFIX = "Bearer ";
 
-    /**
-     * 태그 값으로 알림하는 거 알아보기
-     */
+
 
 
     /**
-     * 사용자기기 고유 토큰 저장
-     * @param request userId, token값
+     * 사용자기기 알림 고유 토큰 저장
+     * @param request userId, 기기의 token 값
      * @return 성공여부 (성공 : 1, 실패 : 0)
      * @throws Exception
      */
-
+    @Operation(summary = "사용자기기 알림 고유 토큰 저장 API", description = "사용자기기 알림 고유 토큰 저장"
+            , responses = {
+            @ApiResponse(responseCode = "1", description = "성공"),
+            @ApiResponse(responseCode = "0", description = "실패"),
+            @ApiResponse(responseCode = "200", description = "Ok"),
+            @ApiResponse(responseCode = "404", description = "Page Not Found"),
+    })
     @PostMapping("saveToken")
     public int saveToken(HttpServletRequest request, @CookieValue(value = "${jwt.token.access.name}") String token) throws Exception {
         log.info(getClass().getName() + "토큰 저장 시작");
@@ -84,11 +93,18 @@ public class AlarmController {
 
 
     /**
-     * 사용자 아이디 받아서 기기 조회 후 메세지 보내기
-     * @param request
-     * @return
+     * Push 메세지 보내기
+     * @param request 메시지(제목, 내용, url)
+     * @return 성공 여부
      * @throws Exception
      */
+    @Operation(summary = "Push 메세지 보내기 API", description = "Push 메세지 보내기"
+            , responses = {
+            @ApiResponse(responseCode = "1", description = "성공"),
+            @ApiResponse(responseCode = "0", description = "실패"),
+            @ApiResponse(responseCode = "200", description = "Ok"),
+            @ApiResponse(responseCode = "404", description = "Page Not Found"),
+    })
     @PostMapping("sendMessing")
     public int sendMessing(HttpServletRequest request, @CookieValue(value = "${jwt.token.access.name}") String token) throws Exception {
         log.info(getClass().getName() + "메세지 보내기 시작");
@@ -96,15 +112,24 @@ public class AlarmController {
         TokenDTO tDTO = tokenAPIService.getTokenInfo(HEADER_PREFIX +token);
         log.info("TokenDTO : " + tDTO);
 
+
+        String title = CmmUtil.nvl(request.getParameter("title"));
+        String content = CmmUtil.nvl(request.getParameter("content"));
+        String url = CmmUtil.nvl(request.getParameter("url"));
+
+        log.info("제목 :" +title);
+        log.info("내용 :" +content);
+        log.info("url :" +url);
+
         String userId = CmmUtil.nvl(tDTO.userId()); // token 에서 추출한 Id값
         List<String> deviceDTO = Optional.ofNullable(getDevice(userId)).orElseGet(ArrayList::new);
 
         AlarmMsgDTO pDTO = AlarmMsgDTO.builder()
                 .deviceDTO(deviceDTO)
                 .userId(userId)
-                .title("제목입니다.")
-                .content("내용입니다")
-                .url("https://www.naver.com/")
+                .title(title)
+                .content(content)
+                .url(url)
                 .build();
 
         int res = alarmService.sendMessing(pDTO);
@@ -116,7 +141,7 @@ public class AlarmController {
 
     /**
      *
-     * @param userId 회원아이디
+     * @param userId 쿠키에 있는 회원아이디
      * @return 기기의 토큰값이 있는 List
      * @throws Exception
      */
@@ -133,8 +158,17 @@ public class AlarmController {
 
 
     /**
-     * 사용자 알람 조회 함수 만들기
+     *  사용자의 알림 내역 전체 조회
+     * @param token 쿠키에 있는 JWT Token
+     * @return 과거 알림 내역
+     * @throws Exception
      */
+    @Operation(summary = "사용자의 알림 내역 전체 조회 API", description = "사용자의 알림 내역 전체 조회"
+            , responses = {
+
+            @ApiResponse(responseCode = "200", description = "Ok"),
+            @ApiResponse(responseCode = "404", description = "Page Not Found"),
+    })
     @PostMapping(value = "getAlarmList")
     public List<AlarmMsgDTO> getAlarmList(@CookieValue(value = "${jwt.token.access.name}") String token)throws Exception {
         log.info(getClass().getName() + "알람 내역 가져오기 시작");
@@ -152,9 +186,18 @@ public class AlarmController {
 
 
     /**
-     *  사용자의 과거 알람 전체 삭제
-
+     *  사용자의 알림 전체 삭제
+     * @param token 쿠키에 있는 JWT Token
+     * @return 성공 여부
+     * @throws Exception
      */
+    @Operation(summary = "사용자의 알림 전체 삭제 API", description = "사용자의 알림 전체 삭제"
+            , responses = {
+            @ApiResponse(responseCode = "1", description = "성공"),
+            @ApiResponse(responseCode = "0", description = "실패"),
+            @ApiResponse(responseCode = "200", description = "Ok"),
+            @ApiResponse(responseCode = "404", description = "Page Not Found"),
+    })
 
     @PostMapping("deleteAllAlarm")
     public int deleteAllAlarm(@CookieValue(value = "${jwt.token.access.name}") String token) throws Exception {
@@ -174,11 +217,18 @@ public class AlarmController {
 
 
     /**
-     * 사용자의 과거 알람 1건 씩 기록 삭제
-     * @param request
-     * @return
+     *  사용자의 알림 단일 삭제
+     * @param request 알림 pK
+     * @return 성공 여부
      * @throws Exception
      */
+    @Operation(summary = "사용자의 알림 단일 삭제 API", description = "사용자의 알림 전체 삭제"
+            , responses = {
+            @ApiResponse(responseCode = "1", description = "성공"),
+            @ApiResponse(responseCode = "0", description = "실패"),
+            @ApiResponse(responseCode = "200", description = "Ok"),
+            @ApiResponse(responseCode = "404", description = "Page Not Found"),
+    })
 
     @PostMapping("deleteOneAlarm")
     public int deleteOneAlarm(HttpServletRequest request) throws Exception {

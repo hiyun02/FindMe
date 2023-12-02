@@ -98,19 +98,35 @@ public class AlarmService implements IAlarmService {
     public int sendMessing(AlarmMsgDTO pDTO) throws Exception {
 
         log.info("사용자의 기기에 알리 메세지 보내기 시작 ");
+
         int res = 0;
+
         log.info("pDTO.deviceDTO" + pDTO.deviceDTO().toString());
 
-        /**
-         * Api 요청
-         */
-        if (pDTO.deviceDTO().size() < 6) {
+
+
+
+        // 리스트가 5개 이하면 그대로 출력, 6개 이상이면 5개씩 나눠 출력
+        if (pDTO.deviceDTO().size() <= 5) {
             pushService.pushAPI(authKey, type, targetType, pDTO.deviceDTO(), pDTO.title(), pDTO.content(), pDTO.url());
-        } else {
-            log.info("push 알림기기 5개 이상이라서 일단 막음 추후 수정");
+
+            log.info("Push 알림을 보내는 token 갯수 : " + pDTO.deviceDTO().size() );
+        }else {
+            List<List<String>> result = new ArrayList<>();
+            int fromIndex = 0;
+            while (fromIndex < pDTO.deviceDTO().size()) {
+                result.add(new ArrayList<String>(
+                        pDTO.deviceDTO().subList(fromIndex, Math.min(fromIndex + 5,  pDTO.deviceDTO().size()))));
+                fromIndex += 5;
+            }
+            for (List<String> subList : result) {
+                pushService.pushAPI(authKey, type, targetType, subList, pDTO.title(), pDTO.content(), pDTO.url());
+                log.info("Push 알림을 보내는 token 갯수 : " + pDTO.deviceDTO().size() );
+            }
         }
 
 
+        // 알람 메세지 저장
         AlarmMsgEntity rEntity = AlarmMsgEntity.builder()
                 .title(pDTO.title())
                 .content(pDTO.content())
@@ -121,7 +137,7 @@ public class AlarmService implements IAlarmService {
 
         alarmMsgRepository.save(rEntity);
 
-
+        // 기기 token 최근 사용날짜 최신화
         for (String pushToken : pDTO.deviceDTO()) {
             DeviceEntity nEntity = DeviceEntity.builder()
                     .pushToken(pushToken)
