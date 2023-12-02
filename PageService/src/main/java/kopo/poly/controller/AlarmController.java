@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/overmiss")
+@RequestMapping("/alarm")
 @Controller
 @CrossOrigin(origins = {"http://localhost:13000", "http://localhost:14000"}, allowedHeaders = {"POST, GET"}, allowCredentials = "true")
-/* 해외 실종자 확인 */
-public class OverMissController {
+public class AlarmController {
 
-    @GetMapping("missList")
-    public String overMissList() {
-        log.info("타냐??");
-        return "overmiss/overMissList";}
+    @GetMapping("alarm")
+    public String alarm(){
+        return "alarm/alarm";
+    }
 }
