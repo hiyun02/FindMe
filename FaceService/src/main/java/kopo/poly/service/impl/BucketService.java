@@ -47,7 +47,7 @@ public class BucketService implements IBucketService {
                         .withCannedAcl(CannedAccessControlList.PublicRead));
 
                 String imageUrl = amazonS3.getUrl(bucket, fileName).toString();
-                //업로드 성공 시 faceDTO에 파일명, URL 경로 저장
+                //업로드 성공 시 faceDTO에 파일명, URL 경로 저장 // faceService에서는 fileName을 face_name으로 활용
                 FaceDTO pDTO = FaceDTO.builder().imageName(fileName).imageUrl(imageUrl).build();
                 //faceDTO를 결과 List 객체에 추가
                 rList.add(pDTO);

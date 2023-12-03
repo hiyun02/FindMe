@@ -17,14 +17,15 @@ public class BucketController  {
     private final IBucketService bucketService;
 
     @PostMapping("uploadFile")
-    public ResponseEntity<List<FaceDTO>> uploadFile(List<FaceDTO> pList) {
+    public List<FaceDTO> uploadFile(List<FaceDTO> pList) {
         log.info(this.getClass().getName()+"uploadFile Start!");
-        return ResponseEntity.ok(bucketService.uploadFile(pList));
+        log.info("uploadFile List 길아 : {}", pList.size());
+        return bucketService.uploadFile(pList);
     }
 
     @DeleteMapping("deleteFile")
     public ResponseEntity<String> deleteFile(@RequestParam String fileName) {
-        log.info(this.getClass().getName()+"deleteFile Start!");
+        log.info(this.getClass().getName()+"deleteFile Start!");)
         bucketService.deleteFile(fileName);
         return ResponseEntity.ok(fileName);
     }
