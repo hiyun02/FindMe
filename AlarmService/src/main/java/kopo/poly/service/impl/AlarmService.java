@@ -70,6 +70,8 @@ public class AlarmService implements IAlarmService {
 
 
 
+
+
         log.info(getClass().getName() + "saveToken End");
         return res;
     }
@@ -111,17 +113,19 @@ public class AlarmService implements IAlarmService {
             pushService.pushAPI(authKey, type, targetType, pDTO.deviceDTO(), pDTO.title(), pDTO.content(), pDTO.url());
 
             log.info("Push 알림을 보내는 token 갯수 : " + pDTO.deviceDTO().size() );
-        }else {
+        } else if (pDTO.deviceDTO().size()==0) {
+            log.info("메시지 보낼 사람 없음");
+        } else {
             List<List<String>> result = new ArrayList<>();
             int fromIndex = 0;
             while (fromIndex < pDTO.deviceDTO().size()) {
                 result.add(new ArrayList<String>(
-                        pDTO.deviceDTO().subList(fromIndex, Math.min(fromIndex + 5,  pDTO.deviceDTO().size()))));
+                        pDTO.deviceDTO().subList(fromIndex, Math.min(fromIndex + 5, pDTO.deviceDTO().size()))));
                 fromIndex += 5;
             }
             for (List<String> subList : result) {
                 pushService.pushAPI(authKey, type, targetType, subList, pDTO.title(), pDTO.content(), pDTO.url());
-                log.info("Push 알림을 보내는 token 갯수 : " + pDTO.deviceDTO().size() );
+                log.info("Push 알림을 보내는 token 갯수 : " + pDTO.deviceDTO().size());
             }
         }
 

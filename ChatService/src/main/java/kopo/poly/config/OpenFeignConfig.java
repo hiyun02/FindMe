@@ -20,4 +20,6 @@ public class OpenFeignConfig {
          */
         return Logger.Level.FULL;
     }
+
+
 }

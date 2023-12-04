@@ -70,6 +70,7 @@ public class SecurityConfig {
                         .pathMatchers("/facecan/**").permitAll()
                         .pathMatchers("/SAM/**").permitAll()
                         .pathMatchers("/alarm/**").permitAll()
+                        .pathMatchers("/chat/**").permitAll()
 
 
 
