@@ -18,8 +18,8 @@ public class ChatEntity {
 
     @Id // roomKey (PK) == 채팅방 Pk
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ROOM_KEY")
-    private Long roomKey;
+    @Column(name = "ROOM_NAME")
+    private Long roomName;
 
     @NonNull // 보내는 Id
     @Column(name = "SEND_ID",  nullable = false)
