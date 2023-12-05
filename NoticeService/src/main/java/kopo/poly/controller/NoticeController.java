@@ -88,8 +88,9 @@ public class NoticeController {
 
     /**
      * 공지사항 등록
+     *
      * @param request 공지사항 관련 DTO
-     * @param token 사용자 정보
+     * @param token   사용자 정보
      * @return 성공여부 DTO
      */
     @Operation(summary = "공지사항 등록 API", description = "공지사항 등록 및 등록결과를 제공하는 API",
@@ -105,7 +106,7 @@ public class NoticeController {
         MsgDTO dto = null; // 결과 메시지 구조
 
         try {
-            TokenDTO tDTO = tokenAPIService.getTokenInfo(HEADER_PREFIX +token);
+            TokenDTO tDTO = tokenAPIService.getTokenInfo(HEADER_PREFIX + token);
             log.info("TokenDTO : " + tDTO);
 
             String userId = CmmUtil.nvl(tDTO.userId());//JWT Access 토큰으로부터 회원아이디 가져오기
@@ -130,7 +131,7 @@ public class NoticeController {
             msg = "실패하였습니다. : " + e.getMessage();
             log.info(e.toString());
             e.printStackTrace();
-        }finally {
+        } finally {
             dto = MsgDTO.builder().result(res).msg(msg).build();
 
             log.info(this.getClass().getName() + ".noticeInsert End!");
@@ -140,15 +141,11 @@ public class NoticeController {
     }
 
 
-
-
-
-
     /**
      * 공지사항 수정
      *
      * @param request 공지사항 관련
-     * @param token 유저정보
+     * @param token   유저정보
      * @return 결과 정보(성공, 실패)
      */
     @Operation(summary = "공지사항 수정 API", description = "공지사항 수정 및 수정결과를 제공하는 API",
@@ -243,7 +240,6 @@ public class NoticeController {
         }
         return dto;
     }
-
 
 
 }

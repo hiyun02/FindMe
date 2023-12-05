@@ -2,11 +2,15 @@ package kopo.poly.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 
 @Builder
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public record MissingDTO(
+
         String missingSeq, // Pk Seq
         String occrde, // 발생일시
         String alldressingDscd, // 착의사항
@@ -24,8 +28,15 @@ public record MissingDTO(
         String haircolrDscd,//두발색상
         String msspsnIdntfccd,// 인물 사진
         // 얼굴 이미지를 위한 변수 추가 선언
-        String imageUrl, //bucket url
+        List<String> imageUrlList, //bucket url
+        List<MultipartFile> multipartFiles, //
         String subject_id,
-        String subject_name //bucke의 파일명
+        String subject_name, //bucket의 파일명
+
+        String readCnt, // 조회수
+        String regId, // 등록자 아이디
+        String regDt, // 등록일
+        String chgId, // 수정자 아이디
+        String chgDt // 수정일
 ) {
 }

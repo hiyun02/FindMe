@@ -11,6 +11,7 @@ import kopo.poly.dto.NoticeDTO;
 import kopo.poly.dto.TokenDTO;
 import kopo.poly.service.INoticeService;
 import kopo.poly.service.ITokenAPIService;
+import kopo.poly.service.feign.IBucketApiService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,13 +33,16 @@ public class MissingController {
 
     private final ITokenAPIService tokenAPIService;
 
+    private final IBucketApiService bucketApiService;
+
     private final String HEADER_PREFIX = "Bearer ";
 
 
     /**
      * 실종정보 게시판 등록
+     *
      * @param missingDTO 실종 정보
-     * @param token   사용자 정보
+     * @param token      사용자 정보
      * @return 성공여부 DTO
      */
     @Operation(summary = "실종정보 등록 API", description = "실종정보 등록 및 등록결과를 제공하는 API",
@@ -60,6 +64,8 @@ public class MissingController {
 
             TokenDTO tDTO = tokenAPIService.getTokenInfo(HEADER_PREFIX + token);
             log.info("TokenDTO : " + tDTO);
+
+            String reg_id = tDTO.userId();
 
 //          이미지 버킷 업로드
 //          subject 생성
@@ -92,7 +98,7 @@ public class MissingController {
             , responses = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Page Not Found!")})
-    @PostMapping(value = "noticeList")
+    @PostMapping(value = "missingList")
     public List<NoticeDTO> noticeList() {
 
         log.info(this.getClass().getName() + ".noticeList Start!");
@@ -114,7 +120,7 @@ public class MissingController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK"),
                     @ApiResponse(responseCode = "404", description = "Page Not Found!")})
-    @PostMapping(value = "noticeInfo")
+    @PostMapping(value = "missingInfo")
     public NoticeDTO noticeInfo(HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + ".noticeInfo Start!");
@@ -138,18 +144,17 @@ public class MissingController {
     }
 
 
-
     /**
      * 공지사항 수정
      *
      * @param request 공지사항 관련
-     * @param token 유저정보
+     * @param token   유저정보
      * @return 결과 정보(성공, 실패)
      */
     @Operation(summary = "공지사항 수정 API", description = "공지사항 수정 및 수정결과를 제공하는 API",
             responses = {@ApiResponse(responseCode = "200", description = "OK"),
                     @ApiResponse(responseCode = "404", description = "Page Not Found!"),})
-    @PostMapping(value = "noticeUpdate")
+    @PostMapping(value = "missingDelete")
     public MsgDTO noticeUpdate(HttpServletRequest request,
                                @CookieValue(value = "${jwt.token.access.name}") String token) {
 
@@ -238,7 +243,6 @@ public class MissingController {
         }
         return dto;
     }
-
 
 
 }
