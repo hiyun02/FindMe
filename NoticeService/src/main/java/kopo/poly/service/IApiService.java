@@ -1,5 +1,4 @@
 package kopo.poly.service;
-import kopo.poly.dto.WarnDTO;
 
 public interface IApiService {
 

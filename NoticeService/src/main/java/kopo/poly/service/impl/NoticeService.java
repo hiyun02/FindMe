@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import kopo.poly.dto.NoticeDTO;
 import kopo.poly.repository.NoticeRepository;
-import kopo.poly.repository.entity.NoticeEntity;
 import kopo.poly.service.INoticeService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;

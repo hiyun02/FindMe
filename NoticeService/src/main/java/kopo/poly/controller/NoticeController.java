@@ -5,11 +5,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import kopo.poly.dto.MissingDTO;
 import kopo.poly.dto.MsgDTO;
 import kopo.poly.dto.NoticeDTO;
 import kopo.poly.dto.TokenDTO;
 import kopo.poly.service.INoticeService;
 import kopo.poly.service.ITokenAPIService;
+import kopo.poly.service.feign.IBucketApiService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ public class NoticeController {
 
     private final INoticeService noticeService;
 
+    private final IBucketApiService bucketApiService;
     private final ITokenAPIService tokenAPIService;
 
     private final String HEADER_PREFIX = "Bearer ";
@@ -84,6 +87,67 @@ public class NoticeController {
 
         return rDTO;
     }
+
+
+    /**
+     * 실종정보 게시판 등록
+     *
+     * @param missingDTO 실종 정보
+     * @param token      사용자 정보
+     * @return 성공여부 DTO
+     */
+    @Operation(summary = "실종정보 등록 API", description = "실종정보 등록 및 등록결과를 제공하는 API",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK"),
+                    @ApiResponse(responseCode = "404", description = "Page Not Found!")})
+    @PostMapping(value = "insertMissingInfo")
+    public MsgDTO insertMissingInfo(@RequestBody MissingDTO missingDTO,
+                                    @CookieValue(value = "${jwt.token.access.name}") String token) {
+
+        log.info(this.getClass().getName() + ".insertMissingInfo Start!");
+
+        String msg = ""; // 메시지 내용
+        int res = 0; // 성공 여부
+        MsgDTO dto = null; // 결과 메시지 구조
+
+        try {
+            log.info("MissingDTO : " + missingDTO.toString());
+
+            TokenDTO tDTO = tokenAPIService.getTokenInfo(HEADER_PREFIX + token);
+            log.info("TokenDTO : " + tDTO);
+            String reg_id = tDTO.userId();
+
+            MissingDTO pDTO = MissingDTO.builder()
+                    .occrde(missingDTO.occrde()).alldressingDscd(missingDTO.alldressingDscd())
+                    .regId(reg_id)
+                    .build();
+
+//          이미지 버킷 업로드
+//          subject 생성
+//          subject id를 가지고 face 생성
+//          이미지 url. subject_id, subject_name을 포함시키기
+//          noticeService.insertNoticeInfo(missingDTO);
+//          등록 결과 및 메시지
+
+            msg = "등록되었습니다.";
+            res = 1;
+
+        } catch (Exception e) {
+            msg = "실패하였습니다. : " + e.getMessage();
+            log.info(e.toString());
+            e.printStackTrace();
+        } finally {
+            dto = MsgDTO.builder().result(res).msg(msg).build();
+
+            log.info(this.getClass().getName() + ".insertMissingInfo End!");
+        }
+
+        return dto;
+    }
+
+
+
+
 
 
     /**

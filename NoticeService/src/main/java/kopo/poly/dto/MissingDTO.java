@@ -6,33 +6,38 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-
 @Builder
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public record MissingDTO(
 
         String missingSeq, // Pk Seq
-        String occrde, // 발생일시
-        String alldressingDscd, // 착의사항
-        String ageNow, //현재나이
-        String age, // 당시나이
+
+        // 텍스트 입력 정보
         String writngTrgetDscd, //대상구분
+        String detailTrgetDscd, //상세구분
+        String occrde, // 발생일시
+        String nm, //실종자명
         String sexdstnDscd, //성별구분
-        String occrAdres, // 발생장소
-        String nm, //성명
-        String height,// 키
-        String bdwgh,//몸무게
-        String frmDscd,//체격
         String faceshpeDscd,//얼굴형
+        String birthDt,
+        String age, // 실종 나이
+        String height,// 키
+        String frmDscd,//체격
         String hairshpeDscd,//두발형태
         String haircolrDscd,//두발색상
-        String msspsnIdntfccd,// 인물 사진
-        // 얼굴 이미지를 위한 변수 추가 선언
-        List<String> imageUrlList, //bucket url
-        List<MultipartFile> multipartFiles, //
-        String subject_id,
-        String subject_name, //bucket의 파일명
+        String alldressingDscd, // 착의사항
+        String occrAdres, // 발생장소
 
+        // 얼굴 이미지를 위한 변수 추가 선언
+        List<String> imageUrlList, //실종자 이미지 url
+        List<MultipartFile> multipartFiles, //
+
+        String subject_id, // 해당 실종자의 이미지 정보를 조회할 subject_id
+        String subject_name, //bucket의 파일명. 이미지가 여러 개인 경우 subject_name 뒤에 번호를 붙힘
+        String face_url,
+
+        // 게시글 등록
+        String title,
         String readCnt, // 조회수
         String regId, // 등록자 아이디
         String regDt, // 등록일
