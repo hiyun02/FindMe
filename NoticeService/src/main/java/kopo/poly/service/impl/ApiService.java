@@ -1,6 +1,5 @@
 package kopo.poly.service.impl;
 
-import kopo.poly.service.IApiService;
 import kopo.poly.service.feign.IPoliceApiService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
