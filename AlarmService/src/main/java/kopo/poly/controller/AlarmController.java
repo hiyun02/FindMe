@@ -170,7 +170,8 @@ public class AlarmController {
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
     @PostMapping(value = "getAlarmList")
-    public List<AlarmMsgDTO> getAlarmList(@CookieValue(value = "${jwt.token.access.name}") String token)throws Exception {
+//    public List<AlarmMsgDTO> getAlarmList(@CookieValue(value = "${jwt.token.access.name}") String token)throws Exception {
+    public List<AlarmMsgDTO> getAlarmList(String token)throws Exception {
         log.info(getClass().getName() + "알람 내역 가져오기 시작");
 
         TokenDTO tDTO = tokenAPIService.getTokenInfo(HEADER_PREFIX +token);
