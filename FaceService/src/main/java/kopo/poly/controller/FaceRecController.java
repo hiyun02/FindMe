@@ -35,16 +35,16 @@ public class FaceRecController {
     @PostMapping(value = "",
             consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public List<FaceDTO> getRecognizedList(@RequestPart FaceDTO faceDTO,
-                                           @RequestPart MultipartFile multipartFile) throws Exception {
+                                           @RequestPart MultipartFile image) throws Exception {
 
         log.info(this.getClass().getName() + ".getRecognizedList Start! ");
 
         log.info("비교를 진행할 대상 Group 아이디 : " + faceDTO.group_id());
-        log.info("유사도 분석 기준 Face 이미지 : " + multipartFile);
+        log.info("유사도 분석 기준 Face 이미지 : " + image);
 
         FaceDTO pDTO = FaceDTO.builder()
                 .group_id(faceDTO.group_id())
-                .image(multipartFile)
+                .image(image)
                 .build();
 
         List<FaceDTO> rList = faceRecService.getRecognizedList(pDTO);

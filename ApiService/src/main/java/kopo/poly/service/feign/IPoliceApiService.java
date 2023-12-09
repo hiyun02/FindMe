@@ -19,7 +19,7 @@ public interface IPoliceApiService {
      */
       @PostMapping (value = "/api/lcm/amberList.do",
               consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-        String warnAPI(
+        String getPoliceAPI(
             @RequestParam("esntlId") String esntlId,
             @RequestParam ("authKey") String authKey,
             @RequestParam ("rowSize")  int rowSize,

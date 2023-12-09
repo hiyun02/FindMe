@@ -6,8 +6,9 @@ import lombok.Builder;
 
 @Builder
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public record WarnDTO(
-        String PoliceSeq, // Pk Seq
+public record PoliceDTO(
+
+        Long policeSeq, // Pk Seq
         String occrde, // 발생일시
         String alldressingDscd, // 착의사항
         String ageNow, //현재나이
@@ -22,9 +23,7 @@ public record WarnDTO(
         String faceshpeDscd,//얼굴형
         String hairshpeDscd,//두발형태
         String haircolrDscd,//두발색상
-        String msspsnIdntfccd// 인물 사진
-
-
-
+        String msspsnIdntfccd,// 인물 사진
+        Long readCnt
 ) {
 }

@@ -9,8 +9,7 @@ import kopo.poly.dto.MsgDTO;
 import kopo.poly.dto.NoticeDTO;
 import kopo.poly.dto.TokenDTO;
 import kopo.poly.service.INoticeService;
-import kopo.poly.service.ITokenAPIService;
-import kopo.poly.service.feign.IBucketApiService;
+import kopo.poly.service.feign.ITokenAPIService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +29,6 @@ public class NoticeController {
 
 
     private final INoticeService noticeService;
-
-    private final IBucketApiService bucketApiService;
     private final ITokenAPIService tokenAPIService;
 
     private final String HEADER_PREFIX = "Bearer ";
@@ -41,7 +38,7 @@ public class NoticeController {
      *
      * @param noticeDTO 실종 정보
      * @param token      사용자 정보
-     * @return 성공여부 DTO
+     * @return
      */
     @Operation(summary = "실종정보 등록 API", description = "실종정보 등록 및 등록결과를 제공하는 API",
             responses = {
@@ -58,23 +55,12 @@ public class NoticeController {
         MsgDTO dto = null; // 결과 메시지 구조
 
         try {
-            log.info("MissingDTO : " + noticeDTO.toString());
+            log.info("NoticeService로 넘어온 실종자 정보 : " + noticeDTO.toString());
 
             TokenDTO tDTO = tokenAPIService.getTokenInfo(HEADER_PREFIX + token);
             log.info("TokenDTO : " + tDTO);
-            String reg_id = tDTO.userId();
+            String userId = tDTO.userId();
 
-            NoticeDTO pDTO = NoticeDTO.builder()
-                    .occrde(noticeDTO.occrde()).alldressingDscd(noticeDTO.alldressingDscd())
-                    .regId(reg_id)
-                    .build();
-
-//          이미지 버킷 업로드
-//          subject 생성
-//          subject id를 가지고 face 생성
-//          이미지 url. subject_id, subject_name을 포함시키기
-//          noticeService.insertNoticeInfo(missingDTO);
-//          등록 결과 및 메시지
 
             msg = "등록되었습니다.";
             res = 1;

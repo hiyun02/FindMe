@@ -71,40 +71,44 @@ public class NoticeEntity {
     @Column(name = "occr_adres",  nullable = false)  // 발생장소
     private String occrAdres;
 
-    @NonNull // 인물 사진 URL
-    @Column(name = "face_url", nullable = false)
-    private String faceUrl; // https://버킷/파일명
-
     @NonNull // 인물 Face 정보 관리할 Subject 식별자 -> 삭제에 사용
     @Column(name = "subject_id", nullable = false)
     private String subjectId;
 
     @NonNull // 인물 Face 정보 관리할 Subject 이름 -> 생성, 조회에 사용
     @Column(name = "subject_name", nullable = false)
-    private String subjectName; // 파일명
+    private String subjectName; // 등록자Id + 실종자명
 
-    @NonNull // 인물 Face 정보 관리할 Subject 이름 -> 생성, 조회에 사용
+    @NonNull // 인물 사진 URL1
+    @Column(name = "face_img_url1", nullable = false)
+    private String faceImgUrl1; // https://버킷/subject_name1.jpg
+
+    @NonNull // 인물 사진 URL2
+    @Column(name = "face_img_url2", nullable = false)
+    private String faceImgUrl2; // https://버킷/subject_name2.jpg
+
+    @NonNull
     @Column(name = "title", nullable = false)
-    private String title; // 파일명
+    private String title; // 제목
 
-    @NonNull // 인물 Face 정보 관리할 Subject 이름 -> 생성, 조회에 사용
+    @NonNull
     @Column(name = "read_cnt", nullable = false)
-    private String readCnt; // 파일명
+    private Long readCnt; // 조회수
 
-    @NonNull // 인물 Face 정보 관리할 Subject 이름 -> 생성, 조회에 사용
+    @NonNull
     @Column(name = "reg_id", nullable = false)
-    private String regId; // 파일명
+    private String regId; // 등록자 아이디
 
-    @NonNull // 인물 Face 정보 관리할 Subject 이름 -> 생성, 조회에 사용
+    @NonNull
     @Column(name = "reg_dt", nullable = false)
-    private String regDt; // 파일명
+    private String regDt; // 등록일
 
-    @NonNull // 인물 Face 정보 관리할 Subject 이름 -> 생성, 조회에 사용
+    @NonNull
     @Column(name = "chg_id", nullable = false)
-    private String chgId; // 파일명
+    private String chgId; // 수정자 아이디
 
-    @NonNull // 인물 Face 정보 관리할 Subject 이름 -> 생성, 조회에 사용
+    @NonNull
     @Column(name = "chg_dt", nullable = false)
-    private String chgDt; // 파일명
+    private String chgDt; // 수정일
 
 }

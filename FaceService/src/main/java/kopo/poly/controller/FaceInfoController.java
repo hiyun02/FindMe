@@ -61,18 +61,18 @@ public class FaceInfoController {
     @PostMapping(value = "create",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public FaceDTO createFace(@RequestPart FaceDTO faceDTO,
-                              @RequestPart MultipartFile multipartFile) throws Exception {
+                              @RequestPart MultipartFile image) throws Exception {
 
         log.info(this.getClass().getName() + ".createFace Start! ");
 
         log.info("등록할 Face의 Group 아이디 : " + faceDTO.group_id());
         log.info("등록할 Face의 Subject 아이디 : " + faceDTO.subject_id());
         log.info("등록할 Face 이름 : " + faceDTO.face_name());
-        log.info("등록할 Face 이미지 : " + multipartFile);
+        log.info("등록할 Face 이미지 : " + image);
 
         FaceDTO pDTO = FaceDTO.builder().group_id(faceDTO.group_id())
                 .subject_id(faceDTO.subject_id()).face_name(faceDTO.face_name())
-                .image(multipartFile).build();
+                .image(image).build();
 
         FaceDTO rDTO = faceInfoService.createFace(pDTO);
 

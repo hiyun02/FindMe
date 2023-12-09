@@ -1,4 +1,4 @@
-package kopo.poly.service;
+package kopo.poly.service.feign;
 
 import kopo.poly.dto.TokenDTO;
 import org.springframework.cloud.context.config.annotation.RefreshScope;

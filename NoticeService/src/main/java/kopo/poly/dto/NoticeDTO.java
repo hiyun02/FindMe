@@ -29,16 +29,16 @@ public record NoticeDTO(
         String occrAdres, // 발생장소
 
         // 얼굴 이미지를 위한 변수 추가 선언
-        List<String> imageUrlList, //실종자 이미지 url
-        List<MultipartFile> multipartFiles, //
+        List<MultipartFile> multipartFiles, // 업로드된 이미지를 받아올 리스트
 
         String subject_id, // 해당 실종자의 이미지 정보를 조회할 subject_id
-        String subject_name, //bucket의 파일명. 이미지가 여러 개인 경우 subject_name 뒤에 번호를 붙힘
-        String face_url,
+        String subject_name, // bucket의 파일명. 이미지가 여러 개인 경우 subject_name 뒤에 번호를 붙힘
 
         // 게시글 등록
+        String faceImgUrl1, //
+        String faceImgUrl2, //
         String title,
-        String readCnt, // 조회수
+        Long readCnt, // 조회수
         String regId, // 등록자 아이디
         String regDt, // 등록일
         String chgId, // 수정자 아이디

@@ -8,19 +8,18 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import kopo.poly.dto.FaceDTO;
 import kopo.poly.service.IBucketService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 // Aws Bucket에 MultipartFile 객체를 이미지로 업로드하는 서비스
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class BucketService implements IBucketService {
 
@@ -30,38 +29,35 @@ public class BucketService implements IBucketService {
     private final AmazonS3 amazonS3;
 
     @Override
-    public List<FaceDTO> uploadFile(List<FaceDTO> pList) {
+    public FaceDTO uploadFile(FaceDTO faceDTO) {
+        log.info(this.getClass().getName()+".uploadFile Start!");
 
-        List<FaceDTO> rList = new ArrayList<>();
+        FaceDTO rDTO;
+        String fileName = faceDTO.imageName(); // subject_name을 업로드 파일명으로 사용
 
-        // forEach 구문을 통해 multipartFiles 리스트로 넘어온 파일들을 순차적으로 fileNameList 에 추가
-        for (int i = 0; i < pList.size(); i++) {
-            FaceDTO faceDTO = pList.get(i);
-            String fileName = faceDTO.imageName();
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(faceDTO.image().getSize());
-            objectMetadata.setContentType(faceDTO.image().getContentType());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(faceDTO.image().getSize());
+        objectMetadata.setContentType(faceDTO.image().getContentType());
 
-            try (InputStream inputStream = faceDTO.image().getInputStream()) {
-                amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
-                        .withCannedAcl(CannedAccessControlList.PublicRead));
+        try (InputStream inputStream = faceDTO.image().getInputStream()) {
+            amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
 
-                String imageUrl = amazonS3.getUrl(bucket, fileName).toString();
-                //업로드 성공 시 faceDTO에 파일명, URL 경로 저장 // faceService에서는 fileName을 face_name으로 활용
-                FaceDTO pDTO = FaceDTO.builder().imageName(fileName).imageUrl(imageUrl).build();
-                //faceDTO를 결과 List 객체에 추가
-                rList.add(pDTO);
+            String imageUrl = amazonS3.getUrl(bucket, fileName).toString();
 
-            } catch (IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
-            }
+            //업로드 성공 시 faceDTO에 파일명, URL 경로 저장 // faceService에서는 fileName을 face_name으로 활용
+            rDTO = FaceDTO.builder().imageName(fileName).imageUrl(imageUrl).build();
+            log.info("Object Storage 업로드 결과 : " + rDTO.toString());
 
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
         }
 
-        return rList;
+        log.info(this.getClass().getName()+".uploadFile End!");
+        return rDTO;
     }
 
-    // file 형식이 잘못된 경우를 확인하기 위해 만들어진 로직이며, 파일 타입과 상관없이 업로드할 수 있게 하기위해, "."의 존재 유무만 판단하였습니다.
+    // file 형식이 잘못된 경우를 확인하기 위해 만들어진 로직이며, 파일 타입과 상관없이 업로드할 수 있게 하기위해, "."의 존재 유무만 판단
     public String getFileExtension(String fileName) {
         try {
             return fileName.substring(fileName.lastIndexOf("."));
@@ -69,7 +65,6 @@ public class BucketService implements IBucketService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일" + fileName + ") 입니다.");
         }
     }
-
 
     public void deleteFile(String fileName) {
         amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));

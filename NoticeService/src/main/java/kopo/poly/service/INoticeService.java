@@ -9,7 +9,7 @@ public interface INoticeService {
     /**
      * 실종자 게시판 카테고리 별 조회
      */
-    List<NoticeDTO> getNoticeList(String category);
+    List<NoticeDTO> getNoticeList(String category) throws Exception;
 
     /**
      * 실종자 상세 정보 가져오기
@@ -24,7 +24,7 @@ public interface INoticeService {
      *
      * @param pDTO 실종자 정보 저장하기 위한 객체
      */
-    void insertNoticeInfo(NoticeDTO pDTO);
+    void insertNoticeInfo(NoticeDTO pDTO, String userId) throws Exception;
 
     /**
      * 실종자 정보 수정하기
@@ -38,6 +38,6 @@ public interface INoticeService {
      *
      * @param pDTO 공지사항 삭제하기 위한 객체
      */
-    void deleteNoticeInfo(NoticeDTO pDTO);
+    void deleteNoticeInfo(NoticeDTO pDTO) throws Exception;
 
 }

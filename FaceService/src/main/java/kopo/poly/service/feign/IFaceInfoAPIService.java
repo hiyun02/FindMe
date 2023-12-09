@@ -54,7 +54,7 @@ public interface IFaceInfoAPIService {
       )
         void deleteFace(
                 @RequestHeader("group-id") String group_id,
-                @RequestHeader("subject_id") String subject_id,
+                @RequestHeader("subject-id") String subject_id,
                 @PathVariable("face_id") String face_id
       );
 

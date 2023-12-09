@@ -3,42 +3,89 @@ package kopo.poly.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import kopo.poly.dto.FaceDTO;
 import kopo.poly.dto.NoticeDTO;
 import kopo.poly.repository.NoticeRepository;
 import kopo.poly.repository.entity.NoticeEntity;
 import kopo.poly.service.INoticeService;
+import kopo.poly.service.feign.IBucketApiService;
+import kopo.poly.service.feign.IFacecanAPIService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class NoticeService implements INoticeService {
-
-    // RequiredArgsConstructor 어노테이션으로 생성자를 자동 생성함
-    // noticeRepository 변수에 이미 메모리에 올라간 NoticeRepository 객체를 넣어줌
-    // 예전에는 autowired 어노테이션를 통해 설정했었지만, 이젠 생성자를 통해 객체 주입함
     private final NoticeRepository noticeRepository;
+    private final IBucketApiService bucketApiService;
+    private final IFacecanAPIService facecanAPIService;
 
+    //해외입양자 그룹의 group_id
+    private final String groupAdopters = "13FSA6TU11";
+
+    //국내실종자 그룹의 group_id
+    private final String groupMissing = "YNLYTWV533";
 
     @Override
-    public void insertNoticeInfo(NoticeDTO pDTO) {
+    public void insertNoticeInfo(NoticeDTO pDTO, String userId) throws Exception {
 
         log.info(this.getClass().getName() + ".insertNoticeInfo Start!");
 
-        String title = CmmUtil.nvl(pDTO.title());
+        // 업로드된 이미지 개수
+        int uploadedImgLength = pDTO.multipartFiles().size();
 
-        log.info("title : " + title);
+        // 1. 실종자 얼굴 이미지 업로드
+        String subjectName = userId + "_" + pDTO.nm(); // "등록자Id + 실종자명"으로 지정
+        List<FaceDTO> storageResultList = new ArrayList<>(); // 이미지 url 담을 List 선언
+        for (int i = 0; i < uploadedImgLength; i++) {
+            MultipartFile mf = pDTO.multipartFiles().get(i);
+            String fileName = "FindMe/" + subjectName + i + ".jpg"; // 복수의 이미지를 저장하므로 번호를 붙혀 구분
+            log.info("업로드할 이미지 파일 명 : {}", fileName);
+            FaceDTO faceDTO = bucketApiService.uploadFile(mf, fileName); // 업로드할 파일과 파일명을 버킷으로 전달
+            storageResultList.add(faceDTO);
+        }
+        String faceImgUrl1 = storageResultList.get(0).imageUrl();
+        String faceImgUrl2 = storageResultList.get(1).imageUrl();
+        log.info("업로드된 이미지 파일 경로1 : {}", faceImgUrl1);
+        log.info("업로드된 이미지 파일 경로2 : {}", faceImgUrl2);
 
-        // 공지사항 저장을 위해서는 PK 값은 빌더에 추가하지 않는다.
-        // JPA에 자동 증가 설정을 해놨음
+        // 2. 해당 실종자의 얼굴 분석 정보를 저장할 Subject 생성
+        // 실종 대분류에 따라 적절한 group_id를 할당함
+        String group_id = (pDTO.writngTrgetDscd().equals("국내실종")) ? groupMissing : groupAdopters;
+        // subject 생성 : subject_id, subject_name, group_name 반환
+        FaceDTO subjectDTO = facecanAPIService.createSubject(group_id, subjectName);
+        log.info("실종자 이미지 분석 정보를 저장할 Subject 생성 결과 : {}", subjectDTO.toString());
+
+        // 3. subject id를 가지고 face 생성 (이미지의 개수만큼 생성)
+        String subject_id = subjectDTO.subject_id();
+        for (int i = 0; i < uploadedImgLength; i++) {
+            String face_name = subjectName + i;
+            facecanAPIService.createFace(group_id, subject_id, face_name, pDTO.multipartFiles().get(i));
+            log.info("실종자 이미지 정보 저장 성공 : {}", i);
+        }
+
+        // 4. 사용자가 입력한 실종자 정보에 업로드이미지 url, subject_id, subject_name 등 추가하여 Insert
         NoticeEntity pEntity = NoticeEntity.builder()
-                .title(title).readCnt(0L)
+                .writngTrgetDscd(pDTO.writngTrgetDscd())
+                .detailTrgetDscd(pDTO.detailTrgetDscd())
+                .occrde(pDTO.occrde()).nm(pDTO.nm())
+                .sexdstnDscd(pDTO.sexdstnDscd()).faceshpeDscd(pDTO.faceshpeDscd())
+                .birthDt(pDTO.birthDt()).age(pDTO.age()).height(pDTO.height())
+                .frmDscd(pDTO.frmDscd()).hairshpeDscd(pDTO.hairshpeDscd()).haircolrDscd(pDTO.haircolrDscd())
+                .alldressingDscd(pDTO.alldressingDscd()).occrAdres(pDTO.occrAdres())
+                // Storage에 등록한 이미지 URL 정보
+                .faceImgUrl1(faceImgUrl1).faceImgUrl2(faceImgUrl2)
+                // NUGU Facecan API에 등록한 Subject 정보
+                .subjectId(subject_id).subjectName(subjectName)
+                .title(pDTO.title()).readCnt(0L)
                 .regId(userId).regDt(DateUtil.getDateTime("yyyy-MM-dd hh:mm:ss"))
                 .chgId(userId).chgDt(DateUtil.getDateTime("yyyy-MM-dd hh:mm:ss"))
                 .build();
@@ -51,16 +98,14 @@ public class NoticeService implements INoticeService {
     }
 
     @Override
-    public List<NoticeDTO> getNoticeList(String category) {
+    public List<NoticeDTO> getNoticeList(String category) throws Exception {
 
         log.info(this.getClass().getName() + ".getNoticeList Start!");
 
         NoticeEntity pEntity = NoticeEntity.builder().writngTrgetDscd(category).build();
 
-        // 실종자 테이블에 카테고리 별 전체조획 시작
         List<NoticeEntity> rList = noticeRepository.findAllByWritngTrgetDscdOrderByNoticeSeqDesc(pEntity);
 
-        // 엔티티의 값들을 DTO에 맞게 넣어주기
         List<NoticeDTO> nList = new ObjectMapper().convertValue(rList,
                 new TypeReference<List<NoticeDTO>>() {
                 });
@@ -72,22 +117,16 @@ public class NoticeService implements INoticeService {
 
     @Transactional
     @Override
-    public NoticeDTO getNoticeInfo(NoticeDTO pDTO, boolean type) {
+    public NoticeDTO getNoticeInfo(NoticeDTO pDTO, boolean type) throws Exception {
 
         log.info(this.getClass().getName() + ".getNoticeInfo Start!");
 
         if (type) {
-            // 조회수 증가하기
             int res = noticeRepository.updateReadCnt(pDTO.noticeSeq());
-
-            // 조회수 증가 성공여부 체크
-            log.info("res : " + res);
+            log.info("조회수 증가 결과 : {}", res);
         }
 
-        // 공지사항 상세내역 가져오기
         NoticeEntity rEntity = noticeRepository.findByNoticeSeq(pDTO.noticeSeq());
-
-        // 엔티티의 값들을 DTO에 맞게 넣어주기
         NoticeDTO rDTO = new ObjectMapper().convertValue(rEntity, NoticeDTO.class);
 
         log.info(this.getClass().getName() + ".getNoticeInfo End!");
@@ -97,7 +136,7 @@ public class NoticeService implements INoticeService {
 
     @Transactional
     @Override
-    public void updateNoticeInfo(NoticeDTO pDTO) {
+    public void updateNoticeInfo(NoticeDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".updateNoticeInfo Start!");
 
@@ -124,17 +163,36 @@ public class NoticeService implements INoticeService {
     }
 
     @Override
-    public void deleteNoticeInfo(NoticeDTO pDTO) {
+    public void deleteNoticeInfo(NoticeDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".deleteNoticeInfo Start!");
 
         Long noticeSeq = pDTO.noticeSeq();
+        log.info("삭제할 실종자 정보의 noticeSeq : {}", noticeSeq);
 
-        log.info("noticeSeq : " + noticeSeq);
+        String group_id = (pDTO.writngTrgetDscd().equals("국내실종")) ? groupMissing : groupAdopters;
+        log.info("삭제할 실종자 정보의 group_id : {}", group_id);
 
-        // 데이터 수정하기
+        // 실종자 Subject_id 검색
+        NoticeEntity pEntity = noticeRepository.findByNoticeSeq(noticeSeq);
+        String subject_id = pEntity.getSubjectId();
+        log.info("삭제할 실종자 정보의 subject_id : {}", subject_id);
+
+        // 실종자 얼굴 정보 Subject 삭제하기
+        facecanAPIService.deleteSubject(group_id,subject_id);
+
+        String subjectName = pEntity.getSubjectName();
+
+        // storage의 이미지 삭제하기
+        for (int i = 0; i < 2; i++) {
+            String fileName = "FindMe/" + subjectName + i + ".jpg"; // 복수의 이미지를 저장하므로 번호를 붙힘
+            log.info("업로드할 이미지 파일 명 : {}", fileName);
+            String result = bucketApiService.deleteFile(fileName); // 업로드할 파일과 파일명을 버킷으로 전달
+            log.info("storage에 저장된 얼굴 이미지 삭제 결과 : {}", result);
+        }
+
+        // 실종자 데이터 삭제하기
         noticeRepository.deleteById(noticeSeq);
-
 
         log.info(this.getClass().getName() + ".deleteNoticeInfo End!");
     }

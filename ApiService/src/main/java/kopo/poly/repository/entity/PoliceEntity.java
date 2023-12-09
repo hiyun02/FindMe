@@ -8,18 +8,18 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "WARN_API")
+@Table(name = "POLICE")
 @DynamicInsert
 @DynamicUpdate
 @Builder
 @Cacheable
 @Entity
-public class WarnApiEntity {
+public class PoliceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "warnApi_seq")
-    private Long warnApiSeq; // API SEQ
+    @Column(name = "policeSeq")
+    private Long policeSeq; // API SEQ
 
     @NonNull
     @Column(name = "occrde",  nullable = false)
@@ -79,6 +79,7 @@ public class WarnApiEntity {
     @Column(name = "msspsn_idntfccd", nullable = false)
     private String msspsnIdntfccd; // 인물 사진
 
-
-
+    @NonNull
+    @Column(name = "read_cnt", nullable = false)
+    private Long readCnt; // 인물 사진
 }
