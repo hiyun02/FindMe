@@ -1,11 +1,11 @@
 package kopo.poly.controller;
 
+import kopo.poly.dto.UserInfoDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -44,9 +44,17 @@ public class UserController {
         return "user/profile";
     }
 
+    /* 회원정보 수정 로직*/
+    @PostMapping("updateProfile")
+    public String updateProfile(UserInfoDTO userInfoDTO) {
+        log.info(userInfoDTO.userName());
+        return "";
+    }
+    /* 비밀번호 변경 페이지*/
     @GetMapping("changeUserPwd")
-    public String changeUserPwd(){
+    public String changeUserPwd() {
         return "user/changeUserPwd";
 
     }
+
 }

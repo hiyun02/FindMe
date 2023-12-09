@@ -1,7 +1,4 @@
-
 var emailCheck = false; // 인증 여부
-
-
 
 /**
  *  이메일 랜덤코드 생성
