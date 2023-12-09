@@ -116,6 +116,4 @@ function updatePw() {
     } else {
         swal(title = "인증 실패", msg = "인증번호를 다시 한번 확인해주세요.", state = "error");
     }
-
-
 }
