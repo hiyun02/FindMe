@@ -10,7 +10,7 @@ public interface UserService {
 
     /* Profile 회원정보 가져오기 */
     @PostMapping(value = "userInfo")
-    UserInfoDTO userInfo(@RequestBody UserInfoDTO userInfoDTO);
+    UserInfoDTO userInfo();
 
     /* 회원정보 수정하기*/
     @PostMapping(value = "userUpdate")
