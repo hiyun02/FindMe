@@ -18,8 +18,8 @@ public class SwaggerConfig {
                 .contact(new Contact().name("WonJip Kim")
                         .email("kbg5174@naver.com")
                         .url("https://github.com/wonjibkim"))
-                .license(new License()
-                        .name("이협건 교수님 git 주소 : https://github.com/Hyeopgeon-Lee"))
+//                .license(new License()
+//                        .name("이협건 교수님 git 주소 : https://github.com/Hyeopgeon-Lee"))
                 .version("1.0.00");
     }
 

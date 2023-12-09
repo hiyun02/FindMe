@@ -177,4 +177,47 @@ public class MailService implements IMailService {
         return res;
     }
 
+    /**
+     *
+     * @param mDTO
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public int findCode(MailCodeDTO mDTO) throws Exception {
+
+        int res = 0;
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(message, "UTF-8");
+
+        message.setSubject("WZIP의 인증 메일번호가 도착했습니다"); //제목
+        String msgg = "";
+        msgg += "<div style = 'margin:100px;' >";
+        msgg += "<h1> 안녕하세요 WZIP 입니다 ! </h1> ";
+        msgg += "<br>";
+        msgg += "<p> 회원가입 창으로 돌아가 아래 코드를 입력해주세요 </p>";
+        msgg += "<br>";
+        msgg += "<p> 감사합니다 </p>";
+        msgg += "<br>";
+        msgg += "<h3 style='color:blue;'> 인증 코드입니다. </h3>";
+        msgg += "<div style='font-size:130%'>";
+        msgg += "CODE : <strong>";
+        msgg += mDTO.mailCode() + "</strong> <br> <div><br>";
+
+
+        message.setText(msgg, "utf-8", "html"); // 정보, 인코딩방식, 타입 저장
+        message.setFrom(fromMail);
+
+        messageHelper.setTo(mDTO.toMail()); //받는사람
+        messageHelper.setFrom(fromMail); //보내는 사람
+
+        mailSender.send(message);
+
+        res = 1;
+
+
+        return res;
+    }
+
 }

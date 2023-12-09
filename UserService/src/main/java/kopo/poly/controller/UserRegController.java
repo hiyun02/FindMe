@@ -268,6 +268,47 @@ public class UserRegController {
     }
 
 
+    /**
+     * 회원 가입시 인증 처리 + 아이디 비밀번호 찾기 떄 인증 방식으로 사용
+     *
+     * @param request (유저 메일, mail 랜덤 코드)
+     * @return 이미 가입된 이메일 1, 인증코드 전송 성공 2 , 전송 실패 나머지
+     * @throws Exception
+     */
+
+    @Operation(summary = "회원 아이디 중복체크  API", description = "회원 아이디 중복체크",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK"),
+                    @ApiResponse(responseCode = "404", description = "Page Not Found!"),
+            }
+    )
+    @PostMapping(value = "findCode")
+    public int findCode(HttpServletRequest request) throws Exception {
+        log.info(getClass().getName() + "findCode start");
+
+        MailCodeDTO mDTO = MailCodeDTO.builder()
+                .toMail(CmmUtil.nvl(request.getParameter("email")))
+                .mailCode(CmmUtil.nvl(request.getParameter("mailCode")))
+                .build();
+
+        log.info(" userId : " + mDTO.toMail());
+        log.info("인증 메일 번호 : " + mDTO.mailCode());
+
+        int res = mailService.findCode(mDTO);
+
+
+        if (res == 1) {
+            log.info(this.getClass().getName() + " 인증코드가 전송! ");
+        } else {
+            log.info(this.getClass().getName() + " 인증코드 전송을 실패");
+        }
+
+        log.info(getClass().getName() + "findCode end");
+
+        return res;
+    }
+
+
 
 
 
