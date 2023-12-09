@@ -40,5 +40,13 @@ public class UserController {
 
     /* 회원정보 수정 페이지*/
     @GetMapping("profile")
-    public String profile(){return "user/profile";}
+    public String profile() {
+        return "user/profile";
+    }
+
+    @GetMapping("changeUserPwd")
+    public String changeUserPwd(){
+        return "user/changeUserPwd";
+
+    }
 }

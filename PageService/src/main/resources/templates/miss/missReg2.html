@@ -26,6 +26,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
 </head>
 
 <body>
@@ -65,11 +66,11 @@
 				<div class="row">
 					<div class="col-lg-6">
 						<div class="about_thumb mb30-smd">
-							<img class="img-fluid w100" src="/images/about/1.jpg" alt="1.jpg" id="ageNowImage"
-								onclick="ageNowFileUpload(this.id);" style="object-fit: cover;">
-							<input type="file" style="display: none;" id="ageNowFile">
+							<img class="img-fluid w100" src="/images/about/1.jpg" alt="1.jpg" id="ageNowImage" style="object-fit: cover;"
+								onclick="ageNowFileUpload(this.id);">
 							<hr>
-							<img class="img-fluid w100" src="/images/about/1.jpg" alt="1.jpg">
+							<img class="img-fluid w100" src="/images/about/1.jpg" alt="1.jpg" id="ageNowImage2" onclick="ageNowFileUpload(this.id);"  style="object-fit: cover;">
+							<input type="file" style="display: none;" id="ageNowFile">
 						</div>
 					</div>
 					<div class="col-lg-6">
@@ -200,7 +201,7 @@
 
 									<div class="col-lg-12">
 										<div class="my_profile_setting_textarea">
-											<label for="propertyDescription">착의사항</label>
+											<label for="aldressingDscd">착의사항</label>
 											<textarea class="form-control" id="aldressingDscd" name="aldressingDscd"
 												rows="4" placeholder="실종당시 입고있던 의류 혹은 기타 특이사항을 적어주세요"></textarea>
 										</div>
@@ -223,8 +224,10 @@
 						</form>
 					</div>
 				</div>
+
 			</div>
 		</section>
+
 	</div>
 	<!-- Wrapper End -->
 	<script src="/js/jquery-3.6.0.js"></script>
@@ -258,10 +261,12 @@
 			elements.checked = true;
 		}
 
+		let array = [];
+		let fileList = {};
 		// image 눌렀을 경우 해당하는 파일 업로드 실행
-
 		function ageNowFileUpload(id) {
-			console.log(id)
+
+
 			document.getElementById("ageNowFile").click();
 			document.getElementById('ageNowFile').addEventListener('change', readURL, true);
 			//파일 객체 읽어와서 배열에 담아줌
@@ -271,14 +276,25 @@
 				let reader = new FileReader();
 				reader.onloadend = function () {
 					//아이디에 src 읽어온 파일 url로 교체 preview
+					console.log(id);
 					$("#"+id).attr('src', reader.result);
 				}
+
+				fileList = {
+					id: id,
+					file : files
+				}
+				array.push(fileList);
+
 				if (files) {
 					reader.readAsDataURL(this.files[0]);
 				}
 			}
 
 		}
+
+		console.log(array);
+
 	</script>
 </body>
 
