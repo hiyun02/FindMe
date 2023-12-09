@@ -12,10 +12,13 @@ import java.util.List;
 @Repository
 public interface NoticeRepository extends JpaRepository<NoticeEntity, Long> {
 
-    List<NoticeEntity> findAllByOrderByNoticeSeqDesc();
+    // 카테고리별 전체 조회 : 해외입양자 / 국내 실종자
+    List<NoticeEntity> findAllByWritngTrgetDscdOrderByNoticeSeqDesc(NoticeEntity pEntity);
 
+    // pk로 상세조회
     NoticeEntity findByNoticeSeq(Long noticeSeq);
 
+    // pk로 수정
     @Modifying(clearAutomatically = true)
     @Query(value =
             "UPDATE NOTICE A SET A.READ_CNT = IFNULL(A.READ_CNT, 0) + 1 " +

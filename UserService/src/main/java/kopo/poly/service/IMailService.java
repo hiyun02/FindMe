@@ -18,4 +18,6 @@ public interface IMailService {
      */
     int findPassword(String email)throws Exception;
 
+    // 메일 코드 보내기
+    int findCode(MailCodeDTO mDTO)throws Exception;
 }

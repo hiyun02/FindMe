@@ -162,6 +162,8 @@ public class UserInfoService implements IUserInfoService {
 
         Optional<UserInfoEntity> rEntity = userInfoRepository.findById(userId);
 
+
+
         if (rEntity.isPresent()) res = 1;
 
 

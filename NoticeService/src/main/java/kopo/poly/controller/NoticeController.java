@@ -10,6 +10,7 @@ import kopo.poly.dto.NoticeDTO;
 import kopo.poly.dto.TokenDTO;
 import kopo.poly.service.INoticeService;
 import kopo.poly.service.ITokenAPIService;
+import kopo.poly.service.feign.IBucketApiService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,35 +31,94 @@ public class NoticeController {
 
     private final INoticeService noticeService;
 
+    private final IBucketApiService bucketApiService;
     private final ITokenAPIService tokenAPIService;
 
     private final String HEADER_PREFIX = "Bearer ";
 
     /**
-     * 공지사항 리스트 조회
+     * 실종정보 게시판 등록
+     *
+     * @param noticeDTO 실종 정보
+     * @param token      사용자 정보
+     * @return 성공여부 DTO
+     */
+    @Operation(summary = "실종정보 등록 API", description = "실종정보 등록 및 등록결과를 제공하는 API",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK"),
+                    @ApiResponse(responseCode = "404", description = "Page Not Found!")})
+    @PostMapping(value = "insertNoticeInfo")
+    public MsgDTO insertNoticeInfo(@RequestBody NoticeDTO noticeDTO,
+                                    @CookieValue(value = "${jwt.token.access.name}") String token) {
+
+        log.info(this.getClass().getName() + ".insertNoticeInfo Start!");
+
+        String msg = ""; // 메시지 내용
+        int res = 0; // 성공 여부
+        MsgDTO dto = null; // 결과 메시지 구조
+
+        try {
+            log.info("MissingDTO : " + noticeDTO.toString());
+
+            TokenDTO tDTO = tokenAPIService.getTokenInfo(HEADER_PREFIX + token);
+            log.info("TokenDTO : " + tDTO);
+            String reg_id = tDTO.userId();
+
+            NoticeDTO pDTO = NoticeDTO.builder()
+                    .occrde(noticeDTO.occrde()).alldressingDscd(noticeDTO.alldressingDscd())
+                    .regId(reg_id)
+                    .build();
+
+//          이미지 버킷 업로드
+//          subject 생성
+//          subject id를 가지고 face 생성
+//          이미지 url. subject_id, subject_name을 포함시키기
+//          noticeService.insertNoticeInfo(missingDTO);
+//          등록 결과 및 메시지
+
+            msg = "등록되었습니다.";
+            res = 1;
+
+        } catch (Exception e) {
+            msg = "실패하였습니다. : " + e.getMessage();
+            log.info(e.toString());
+            e.printStackTrace();
+        } finally {
+            dto = MsgDTO.builder().result(res).msg(msg).build();
+
+            log.info(this.getClass().getName() + ".insertNoticeInfo End!");
+        }
+
+        return dto;
+    }
+
+    /**
+     * 실종자 정보 리스트 조회
      */
 
-    @Operation(summary = "공지사항 리스트 API", description = "공지사항 리스트 정보 제공하는 API"
+    @Operation(summary = "실종자 정보 리스트 API", description = "카테고리 별 실종자 리스트 제공하는 API"
             , responses = {@ApiResponse(responseCode = "200", description = "OK")
             , @ApiResponse(responseCode = "404", description = "Page Not Found!"),})
     @PostMapping(value = "noticeList")
-    public List<NoticeDTO> noticeList() {
+    public List<NoticeDTO> noticeList(HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + ".noticeList Start!");
-        List<NoticeDTO> rList = Optional.ofNullable(noticeService.getNoticeList()).orElseGet(ArrayList::new);
+
+        String category = CmmUtil.nvl(request.getParameter("category"));
+        log.info("noticeList category : {}", category);
+
+        List<NoticeDTO> rList = Optional.ofNullable(noticeService.getNoticeList(category)).orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".noticeList End!");
 
         return rList;
     }
 
-
     /**
-     * 공지사항 상세보기
+     * 실종자 정보 상세보기
      */
-    @Operation(summary = "공지사항 상세보기 결과제공 API", description = "공지사항 상세보기 결과 및 조회수 증가 API",
-            parameters = {@Parameter(name = "nSeq", description = "공지사항 글번호"),
-                    @Parameter(name = "readCntYn", description = "조회수 증가여부")},
+    @Operation(summary = "실종자 정보 상세보기 결과제공 API", description = "실종자 정보 상세보기 결과 및 조회수 증가 API",
+            parameters = {@Parameter(name = "noticeSeq", description = "실종자 정보 글번호")},
             responses = {@ApiResponse(responseCode = "200", description = "OK"),
                     @ApiResponse(responseCode = "404", description = "Page Not Found!"),})
     @PostMapping(value = "noticeInfo")
@@ -66,17 +126,12 @@ public class NoticeController {
 
         log.info(this.getClass().getName() + ".noticeInfo Start!");
 
-        String nSeq = CmmUtil.nvl(request.getParameter("nSeq"));
-        String readCntYn = CmmUtil.nvl(request.getParameter("readCntYn"));
-        boolean readCnt = readCntYn.equals("Y"); // 공지사항 증가여부를 boolean 값으로 변경
+        String noticeSeq = CmmUtil.nvl(request.getParameter("noticeSeq"));
+        log.info("noticeSeq : " + noticeSeq);
 
-        log.info("nSeq : " + nSeq);
-        log.info("readCntYn : " + readCntYn);
-        log.info("readCnt : " + readCnt);
+        NoticeDTO pDTO = NoticeDTO.builder().noticeSeq(Long.parseLong(noticeSeq)).build();
 
-        NoticeDTO pDTO = NoticeDTO.builder().noticeSeq(Long.parseLong(nSeq)).build();
-
-        NoticeDTO rDTO = Optional.ofNullable(noticeService.getNoticeInfo(pDTO, readCnt))
+        NoticeDTO rDTO = Optional.ofNullable(noticeService.getNoticeInfo(pDTO, true))
                 .orElseGet(() -> NoticeDTO.builder().build());
 
         log.info(this.getClass().getName() + ".noticeInfo Start!");
@@ -86,71 +141,13 @@ public class NoticeController {
 
 
     /**
-     * 공지사항 등록
-     * @param request 공지사항 관련 DTO
-     * @param token 사용자 정보
-     * @return 성공여부 DTO
-     */
-    @Operation(summary = "공지사항 등록 API", description = "공지사항 등록 및 등록결과를 제공하는 API",
-            responses = {@ApiResponse(responseCode = "200", description = "OK"),
-                    @ApiResponse(responseCode = "404", description = "Page Not Found!"),})
-    @PostMapping(value = "noticeInsert")
-    public MsgDTO noticeInsert(HttpServletRequest request,
-                               @CookieValue(value = "${jwt.token.access.name}") String token) {
-        log.info(this.getClass().getName() + ".noticeInsert Start!");
-
-        String msg = ""; // 메시지 내용
-        int res = 0; // 성공 여부
-        MsgDTO dto = null; // 결과 메시지 구조
-
-        try {
-            TokenDTO tDTO = tokenAPIService.getTokenInfo(HEADER_PREFIX +token);
-            log.info("TokenDTO : " + tDTO);
-
-            String userId = CmmUtil.nvl(tDTO.userId());//JWT Access 토큰으로부터 회원아이디 가져오기
-            String title = CmmUtil.nvl(request.getParameter("title")); // 제목
-            String noticeYn = CmmUtil.nvl(request.getParameter("noticeYn")); // 공지글 여부
-            String contents = CmmUtil.nvl(request.getParameter("contents")); // 내용
-
-            log.info("userId : " + userId);
-            log.info("title : " + title);
-            log.info("noticeYn : " + noticeYn);
-            log.info("contents : " + contents);
-
-            NoticeDTO pDTO = NoticeDTO.builder().userId(userId).title(title)
-                    .noticeYn(noticeYn).contents(contents).build();
-
-
-            noticeService.insertNoticeInfo(pDTO);
-
-            msg = "등록되었습니다.";
-            res = 1;
-        } catch (Exception e) {
-            msg = "실패하였습니다. : " + e.getMessage();
-            log.info(e.toString());
-            e.printStackTrace();
-        }finally {
-            dto = MsgDTO.builder().result(res).msg(msg).build();
-
-            log.info(this.getClass().getName() + ".noticeInsert End!");
-        }
-
-        return dto;
-    }
-
-
-
-
-
-
-    /**
-     * 공지사항 수정
+     * 실종자 정보 수정
      *
-     * @param request 공지사항 관련
-     * @param token 유저정보
+     * @param request 실종자 정보 관련
+     * @param token   유저정보
      * @return 결과 정보(성공, 실패)
      */
-    @Operation(summary = "공지사항 수정 API", description = "공지사항 수정 및 수정결과를 제공하는 API",
+    @Operation(summary = "실종자 정보 수정 API", description = "실종자 정보 수정 및 수정결과를 제공하는 API",
             responses = {@ApiResponse(responseCode = "200", description = "OK"),
                     @ApiResponse(responseCode = "404", description = "Page Not Found!"),})
     @PostMapping(value = "noticeUpdate")
@@ -168,19 +165,19 @@ public class NoticeController {
             log.info("TokenDTO : " + tDTO); // Token 값 출력하기
 
             String userId = CmmUtil.nvl(tDTO.userId()); // token 에서 추출한 Id값
-            String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); // 글번호(PK)
+            String noticeSeq = CmmUtil.nvl(request.getParameter("noticeSeq")); // 글번호(PK)
             String title = CmmUtil.nvl(request.getParameter("title")); // 제목
             String noticeYn = CmmUtil.nvl(request.getParameter("noticeYn")); // 공지글 여부
             String contents = CmmUtil.nvl(request.getParameter("contents")); // 내용
 
             log.info("userId : " + userId);
-            log.info("nSeq : " + nSeq);
+            log.info("noticeSeq : " + noticeSeq);
             log.info("title : " + title);
             log.info("noticeYn : " + noticeYn);
             log.info("contents : " + contents);
 
-            NoticeDTO pDTO = NoticeDTO.builder().userId(userId).noticeSeq(Long.parseLong(nSeq))
-                    .title(title).noticeYn(noticeYn).contents(contents).build();
+            NoticeDTO pDTO = NoticeDTO.builder().regId(userId).noticeSeq(Long.parseLong(noticeSeq))
+                    .title(title).build();
 
             noticeService.updateNoticeInfo(pDTO);
 
@@ -192,10 +189,8 @@ public class NoticeController {
             log.info(e.toString());
             e.printStackTrace();
         } finally {
-
             // 결과 메시지 전달하기
             dto = MsgDTO.builder().result(res).msg(msg).build();
-
             log.info(this.getClass().getName() + ".noticeUpdate End!");
         }
 
@@ -205,11 +200,11 @@ public class NoticeController {
 
 
     /***
-     *  공지사항 삭제
-     * @param request 공지사항 삭제 Seq
+     *  실종자 정보 삭제
+     * @param request 실종자 정보 삭제 Seq
      * @return 삭제 성공 여부
      */
-    @Operation(summary = "공지사항 삭제 API", description = "공지사항 삭제 및 삭제 결과를 제공하는 API",
+    @Operation(summary = "실종자 정보 삭제 API", description = "실종자 정보 삭제 및 삭제 결과를 제공하는 API",
             responses = {@ApiResponse(responseCode = "200", description = "OK"),
                     @ApiResponse(responseCode = "404", description = "Page Not Found!"),})
     @PostMapping(value = "noticeDelete")
@@ -220,16 +215,17 @@ public class NoticeController {
         int res = 0; // 성공 여부
         MsgDTO dto = null; // 결과 메시지 구조
         try {
-            String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); // 글번호(PK)
+            String noticeSeq = CmmUtil.nvl(request.getParameter("noticeSeq")); // 글번호(PK)
 
-            log.info("nSeq : " + nSeq);
+            log.info("noticeSeq : " + noticeSeq);
 
-            NoticeDTO pDTO = NoticeDTO.builder().noticeSeq(Long.parseLong(nSeq)).build();
+            NoticeDTO pDTO = NoticeDTO.builder().noticeSeq(Long.parseLong(noticeSeq)).build();
 
             noticeService.deleteNoticeInfo(pDTO);
 
             msg = "삭제되었습니다.";
             res = 1;
+
         } catch (Exception e) {
             msg = "실패하였습니다. : " + e.getMessage();
             log.info(e.toString());
@@ -242,7 +238,6 @@ public class NoticeController {
         }
         return dto;
     }
-
 
 
 }

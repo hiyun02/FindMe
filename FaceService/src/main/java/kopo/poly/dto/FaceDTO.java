@@ -46,7 +46,10 @@ public record FaceDTO(
         FaceBoxDTO face_box, // 인식된 얼굴의 이미지 상에서의 위치
 //      각 표정에 대한 Confidence Value (fear, surprised, neutral, angry, smile, sad, etc)
         Map<String, Double> expression_raw,
-        String transaction_id // 해당 결과에 대한 식별 ID
+        String transaction_id, // 해당 결과에 대한 식별 ID
 
+        //버킷 저장 정보
+        String imageUrl,
+        String imageName
 ) {
 }

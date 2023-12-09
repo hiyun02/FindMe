@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="keywords" content="airbnb, booking, city guide, directory, events, hotel booking, listings, marketing, places, restaurant, restaurant">
-<meta name="description" content="Guido - Directory & Listing HTML Template">
-<meta name="CreativeLayers" content="ATFN">
-<!-- css file -->
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/fileuploader.css">
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/dashbord_navitaion.css">
-<!-- Responsive stylesheet -->
-<link rel="stylesheet" href="/css/responsive.css">
-<!-- Title -->
-<title>아이디 찾기</title>
-<!-- Favicon -->
-<link href="/images/favicon.ico" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
-<link href="/images/favicon.ico" sizes="128x128" rel="shortcut icon" />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="airbnb, booking, city guide, directory, events, hotel booking, listings, marketing, places, restaurant, restaurant">
+	<meta name="description" content="Guido - Directory & Listing HTML Template">
+	<meta name="CreativeLayers" content="ATFN">
+	<!-- css file -->
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/fileuploader.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/dashbord_navitaion.css">
+	<!-- Responsive stylesheet -->
+	<link rel="stylesheet" href="/css/responsive.css">
+	<!-- Title -->
+	<title>비밀번호 찾기</title>
+	<!-- Favicon -->
+	<link href="/images/favicon.ico" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
+	<link href="/images/favicon.ico" sizes="128x128" rel="shortcut icon" />
 
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+	<![endif]-->
 </head>
 <body>
 <div class="wrapper">
@@ -33,6 +34,7 @@
 	<!-- 헤더 파일 시작! -->
 	<th:block th:replace="header"></th:block>
 	<!-- 헤더 파일 종료! -->
+
 	<!-- Inner Page Breadcrumb -->
 	<section class="inner_page_breadcrumb">
 		<div class="container">
@@ -41,8 +43,8 @@
 					<div class="breadcrumb_content">
 						<h2 class="breadcrumb_title">Sign in</h2>
 						<ol class="breadcrumb">
-						    <li class="breadcrumb-item"><a href="#">Home</a></li>
-						    <li class="breadcrumb-item active" aria-current="page">Sign in</li>
+							<li class="breadcrumb-item"><a href="#">Home</a></li>
+							<li class="breadcrumb-item active" aria-current="page">Sign in</li>
 						</ol>
 					</div>
 				</div>
@@ -55,10 +57,10 @@
 	<section class="our-dashbord dashbord bgc-f4 ovh">
 		<div class="container mt80">
 			<div class="row">
-	
+
 				<div class="col-lg-12 mb10">
 					<div class="breadcrumb_content style2 mb25">
-						<h1 class="breadcrumb_title">아이디 찾기</h1>
+						<h1 class="breadcrumb_title">비밀번호 찾기</h1>
 					</div>
 				</div>
 			</div>
@@ -70,32 +72,31 @@
 								<!-- <h2 class="mb30">Login</h2> -->
 								<div class="login_form inner_page">
 									<form style="padding-top: 10%;">
-										<div class="input-group mb-2 mr-sm-2">
-											<input type="text" class="form-control" id="userName" name="userNmae" placeholder="이름">
-										</div>
 
 										<div class="input-group mb-2 mr-sm-2">
-											<input type="text" class="form-control" id="userEmail" name="userEmail" placeholder="이메일">
-											<button type="button" class="btn btn-fb" onclick="javascript(0)">인증</button>
+											<input type="text" class="form-control" id="email" name="email" placeholder="이메일">
+											<button type="button" class="btn btn-fb" onclick="emailSend()"> 인증 번호 발송</button>
 										</div>
 
 										<div class="input-group mb-2 mr-sm-2">
 											<input type="text" class="form-control" id="emailAuth" name="emailAuth" placeholder="인증번호">
 										</div>
 
-										<button type="submit" class="btn btn-log btn-block btn-thm">아이디 찾기</button>
+										<hr>
+										<button type="button" class="btn btn-log btn-block btn-thm" onclick="updatePw()">아이디 찾기</button>
 										<hr>
 										<div class="row mt30">
 											<div class="col-lg-6">
 												<button type="button" class="btn btn-fb btn-block" onclick="location.href='/user/login'">로그인</button>
 											</div>
 											<div class="col-lg-6">
-												<button type="button" class="btn btn-googl btn-block" onclick="location.href='/user/findUserPwd'">비밀번호 찾기</button>
+												<button type="button" class="btn btn-googl btn-block" onclick="location.href='/user/findUserId'">아이디 찾기</button>
 											</div>
 										</div>
 									</form>
+
 								</div>
-								
+
 							</div>
 						</div>
 					</div>
@@ -103,9 +104,21 @@
 			</div>
 		</div>
 	</section>
+
+
+	<a class="scrollToHome" href="#"><i class="fa fa-angle-up"></i></a>
 </div>
 <!-- Wrapper End -->
-<!--<script src="/js/jquery-3.6.0.js"></script>-->
+
+<!--수정 JS-->
+<script src="/js/common.js"></script>
+<script src="/js/user/findUserId.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!--수정 JS-->
+
+
+
+<script src="/js/jquery-3.6.0.js"></script>
 <script src="/js/jquery-migrate-3.0.0.min.js"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
@@ -126,9 +139,6 @@
 <script src="/js/wow.min.js"></script>
 <script src="/js/jquery.smartuploader.js"></script>
 <script src="/js/dashboard-script.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAz77U5XQuEME6TpftaMdX0bBelQxXRlM&callback=initMap"></script>
-<script src="/js/googlemaps1.js"></script>
-<!-- Custom script for all pages --> 
 <script src="/js/script.js"></script>
 </body>
 </html>

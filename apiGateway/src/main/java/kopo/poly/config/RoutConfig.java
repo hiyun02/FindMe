@@ -37,6 +37,9 @@ public class RoutConfig {
         ).route(r -> r.path("/alarm/**") // ALARM 가져오는 서비스
                 .uri("lb://ALARM-SERVICE:18000") // 연결될 서버 주소
 
+        ).route(r -> r.path("/chat/**") // ChatService
+                .uri("lb://CHAT-SERVICE:19000") // 연결될 서버 주소
+
         ).build();
     }
 }

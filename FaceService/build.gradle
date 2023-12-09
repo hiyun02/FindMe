@@ -42,6 +42,8 @@ dependencies {
     // UI Manger
     implementation 'de.codecentric:spring-boot-admin-starter-client'
 
+    //AWS Bucket
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 }
 
