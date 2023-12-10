@@ -1,5 +1,6 @@
 package kopo.poly.service;
 
+import kopo.poly.dto.TokenDTO;
 import kopo.poly.dto.UserInfoDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -23,6 +24,9 @@ public interface IUserInfoService extends UserDetailsService {
     // 유저 정보 삭제
     int userDelete(String userId)throws Exception;
 
-    //비밀번호 확인
-    int passWordCheck(UserInfoDTO pDTO)throws Exception;
+    // 사용자 이메일이 맞는지 확인하기
+    int userEmailCheck(UserInfoDTO dto)throws Exception;
+
+    // 비밀번호 변경
+    int changePwd(UserInfoDTO pDTO)throws Exception;
 }

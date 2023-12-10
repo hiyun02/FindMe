@@ -20,6 +20,9 @@
 <link href="/images/favicon.ico" sizes="128x128" rel="shortcut icon" type="image/x-icon" />
 <link href="/images/favicon.ico" sizes="128x128" rel="shortcut icon" />
 
+
+
+
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -70,31 +73,40 @@
 							<div class="col-lg-12">
 								<!-- <h2 class="mb30">Login</h2> -->
 								<div class="login_form inner_page">
-									<form style="padding-top: 10%;">
+									<form style="padding-top: 10%;" id ="f">
+
+
 										<div class="input-group mb-2 mr-sm-2">
-											<input type="text" class="form-control" id="beforePwd" name="beforePwd" placeholder="기존 비밀번호 확인">
-											<button type="button" class="btn btn-fb" onclick="pwdCheck()">비밀번호 확인</button>
+											<input type="text" class="form-control" id="email" name="email" placeholder="가입한 이메일">
+											<button type="button" class="btn btn-fb" id="emailCheckBtn">인증 번호 발송</button>
 										</div>
+
+
+										<div class="input-group mb-2 mr-sm-2">
+											<input type="text" class="form-control" id="emailAuth" name="emailAuth" placeholder="인증 번호">
+											<button type="button" class="btn btn-fb" id="codeCheckBtn">인증 확인</button>
+										</div>
+
 									<hr>
 
-<!--									<div class="input-group form-group mb5">-->
-<!--											<input type="password" class="form-control" id="userPwd" name="userPwd"placeholder="새 비밀번호">-->
-<!--										</div>-->
-<!--								-->
-<!--										<div class="input-group form-group mb5">-->
-<!--											<input type="password" class="form-control" id="userPwd2" name="userPwd2"placeholder="비밀번호 확인">-->
-<!--										</div>-->
-<!--										<hr>-->
-<!--										<button type="submit" class="btn btn-log btn-block btn-thm">비밀번호 변경</button>-->
-<!--										<hr>-->
-<!--										<div class="row mt30">-->
-<!--											<div class="col-lg-6">-->
-<!--												<button type="button" class="btn btn-fb btn-block" onclick="location.href='/user/login'">로그인</button>-->
-<!--											</div>-->
-<!--											<div class="col-lg-6">-->
-<!--												<button type="button" class="btn btn-googl btn-block" onclick="location.href='/user/findUserId'">아이디 찾기</button>-->
-<!--											</div>-->
-<!--										</div>-->
+									<div class="input-group form-group mb5">
+											<input type="password" class="form-control" id="password" name="password" placeholder="새 비밀번호" autoComplete="off">
+										</div>
+
+										<div class="input-group form-group mb5">
+											<input type="password" class="form-control" id="password2" name="password2" placeholder="비밀번호 확인" autoComplete="off">
+										</div>
+										<hr>
+										<button type="button" class="btn btn-log btn-block btn-thm" id="changePwd">비밀번호 변경</button>
+										<hr>
+										<div class="row mt30">
+											<div class="col-lg-6">
+												<button type="button" class="btn btn-fb btn-block" onclick="location.href='/user/login'">로그인</button>
+											</div>
+											<div class="col-lg-6">
+												<button type="button" class="btn btn-googl btn-block" onclick="location.href='/user/findUserId'">아이디 찾기</button>
+											</div>
+										</div>
 									</form>
 								</div>
 								
@@ -113,9 +125,12 @@
 <!--수정 JS-->
 <script src="/js/jquery-3.6.0.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="/js/common.js"></script>
 <script src="/js/user/changeUserPwd.js"></script>
+<script src="/js/common.js"></script>
 <!--수정 JS-->
+
+
+
 <!-- Wrapper End -->
 <script src="/js/jquery-migrate-3.0.0.min.js"></script>
 <script src="/js/popper.min.js"></script>

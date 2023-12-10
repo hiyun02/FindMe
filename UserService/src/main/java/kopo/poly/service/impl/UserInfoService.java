@@ -2,6 +2,7 @@ package kopo.poly.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kopo.poly.auth.AuthInfo;
+import kopo.poly.dto.TokenDTO;
 import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.repository.UserInfoRepository;
 import kopo.poly.repository.entity.UserInfoEntity;
@@ -27,7 +28,7 @@ public class UserInfoService implements IUserInfoService {
     private final UserInfoRepository userInfoRepository;
 
 
-    private final PasswordEncoder bCryptPasswordEncoder;
+
 
     /**
      * 로그인 처리를 하기 위해 실행하는 함수로 인증 기능을 사용하기 위해서 필수적으로 생성해야됨
@@ -250,32 +251,47 @@ public class UserInfoService implements IUserInfoService {
     }
 
     @Override
-    public int passWordCheck(UserInfoDTO pDTO) throws Exception {
+    public int userEmailCheck(UserInfoDTO dto) throws Exception {
+
+        Optional<UserInfoEntity> rEntity = userInfoRepository.findByUserId(dto.userId());
+
+
+        String email = EncryptUtil.encAES128CBC(dto.email());
+
+        log.info("eamil : " + email);
+        log.info("eamil : " + rEntity.get().getEmail());
+
+        int res = 0;
+        if (email.equals(rEntity.get().getEmail())) {
+            log.info("성공");
+            res = 2;
+        }
+
+        return res;
+    }
+
+    @Override
+    public int changePwd(UserInfoDTO pDTO) throws Exception {
+
 
         int res = 0;
 
+        Optional<UserInfoEntity> rEntity = userInfoRepository.findByUserId(pDTO.userId());
 
-        String user_id = CmmUtil.nvl(pDTO.userId());
+        UserInfoEntity nEntity = UserInfoEntity.builder()
+                .userId(pDTO.userId())
+                .password(pDTO.password())
+                .email(rEntity.get().getEmail())
+                .userName(rEntity.get().getUserName())
+                .userDate(rEntity.get().getUserDate())
+                .addr1(rEntity.get().getAddr1())
+                .addr2(rEntity.get().getAddr2())
+                .roles(rEntity.get().getRoles())
+                .build();
 
-        log.info("user_id : " + user_id);
+        userInfoRepository.save(nEntity);
 
-        Optional<UserInfoEntity> rEntity = userInfoRepository.findByUserId(user_id);
-
-
-        if (rEntity.isPresent()) {
-
-            log.info("성공 1");
-
-            log.info(rEntity.get().getPassword());
-            log.info(bCryptPasswordEncoder.encode(pDTO.password()));
-
-            if (rEntity.get().getPassword().equals(bCryptPasswordEncoder.encode(pDTO.password()))) {
-                log.info("성공 2");
-                res = 1;
-            }
-
-        }
-
+        res = 1;
         return res;
     }
 

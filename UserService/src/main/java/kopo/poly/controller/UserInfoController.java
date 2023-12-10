@@ -6,8 +6,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import kopo.poly.auth.JwtTokenProvider;
 import kopo.poly.auth.JwtTokenType;
+import kopo.poly.dto.MailCodeDTO;
 import kopo.poly.dto.TokenDTO;
 import kopo.poly.dto.UserInfoDTO;
+import kopo.poly.service.IMailService;
 import kopo.poly.service.IUserInfoService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.EncryptUtil;
@@ -38,9 +40,13 @@ public class UserInfoController {
     // JWT 객체
     private final JwtTokenProvider jwtTokenProvider;
 
+    //암호화 알고리즘
+    private final PasswordEncoder bCryptPasswordEncoder;
+
     // 회원 서비스
     private final IUserInfoService userInfoService;
 
+    private final IMailService mailService;
 
 
     /**
@@ -107,39 +113,8 @@ public class UserInfoController {
 
     }
 
-    /**
-     *  유저 비밀번호 체크
-     * @param request
-     * @return 성공여부 (성공 1, 실패 0)
-     * @throws Exception
-     */
-    @Operation(summary = "유저 비밀번호 체크  API", description = "유저 비밀번호 체크 I",
-            responses = {
-                    @ApiResponse(responseCode = "1", description = "비밀번호 일치"),
-                    @ApiResponse(responseCode = "0", description = "일치하지 않음"),
-                    @ApiResponse(responseCode = "200", description = "OK"),
-                    @ApiResponse(responseCode = "404", description = "Page Not Found!"),
-            }
-    )
-    @PostMapping("passWordCheck")
-    public int  passWordCheck(HttpServletRequest request) throws Exception {
-        log.info("비밀번호 확인 시작");
 
-        String passWord = CmmUtil.nvl(request.getParameter("passWord"));
 
-        String userId = CmmUtil.nvl(this.getTokenInfo(request).userId());
-
-        log.info("해당 유저의 id : " + userId);
-
-        UserInfoDTO pDTO = UserInfoDTO.builder().userId(userId).password(passWord).build();
-
-        int res = 0;
-
-        // 비밀번호 확인
-        res = userInfoService.passWordCheck(pDTO);
-
-        return res;
-    }
 
 
     /**
@@ -195,6 +170,133 @@ public class UserInfoController {
         return res;
     }
 
+
+    /**
+     * 로그인 이후에 이메일 체크
+     *
+     * @param request
+     * @return 성공여부 (성공 1, 실패 0)
+     * @throws Exception
+     */
+    @Operation(summary = "로그인 이후에 이메일 체크 API", description = "로그인 이후에 이메일 체크",
+            responses = {
+                    @ApiResponse(responseCode = "2", description = "회원정보에 맞는 이메일 발송 완료"),
+                    @ApiResponse(responseCode = "1", description = "회원정보에 안 맞는 이메일"),
+                    @ApiResponse(responseCode = "0", description = "회원정보에 맞는 이메일이나 메일 발송이 안됨"),
+                    @ApiResponse(responseCode = "200", description = "OK"),
+                    @ApiResponse(responseCode = "404", description = "Page Not Found!"),
+            }
+    )
+    @PostMapping("userEmailCheck")
+    public int userEmailCheck(HttpServletRequest request) throws Exception {
+        log.info(getClass().getName() + "유저 로그인 후에 이메일 인증");
+
+        int res = 0;
+
+
+        log.info(this.getClass().getName() + ".getTokenInfo Start!");
+
+        String email = CmmUtil.nvl(request.getParameter("email"));
+        String emailCode = CmmUtil.nvl(request.getParameter("mailCode"));
+
+        //JWT Access 토큰 가져오기
+        String jwtAccessToken = CmmUtil.nvl(jwtTokenProvider.resolveToken(request, JwtTokenType.ACCESS_TOKEN));
+        log.info("jwtAccessToken : " + jwtAccessToken);
+
+        TokenDTO dto = Optional.ofNullable(jwtTokenProvider.getTokenInfo(jwtAccessToken))
+                .orElseGet(() -> TokenDTO.builder().build());
+
+        log.info("가져오는 userId : " + dto.userId());
+        log.info("가져오는 email : " + email);
+
+        UserInfoDTO rDTO = UserInfoDTO.builder()
+                .email(email)
+                .userId(dto.userId())
+                .build();
+
+        res = userInfoService.userEmailCheck(rDTO);
+
+        // 토큰과 이메일이 일치할 떄만 인증번호 발생 실행
+        if (res == 2) {
+            MailCodeDTO mDTO = MailCodeDTO.builder()
+                    .toMail(email)
+                    .mailCode(emailCode)
+                    .build();
+
+            log.info(" userId : " + mDTO.toMail());
+            log.info("인증 메일 번호 : " + mDTO.mailCode());
+
+            res = mailService.findCode(mDTO);
+        }
+
+
+        if (res == 1) {
+            log.info(getClass().getName() +" 회원정보에 맞는 이메일 인증 성공");
+        } else if (res == 0) {
+            log.info(getClass().getName() +"회원정보에 안 맞는 이메일");
+        } else if (res ==2 ) {
+            log.info(getClass().getName() +"회원정보에 맞는 이메일이나 메일 발송이 안됨");
+
+        }
+
+
+        log.info(getClass().getName() + "유저 로그인 후에 이메일 인증");
+
+        return res;
+    }
+
+
+
+    @Operation(summary = "사용자 비밀번호 변경 API", description = "사용자 비밀번호 변경",
+            responses = {
+                    @ApiResponse(responseCode = "1", description = "비밀번호 변경 성공"),
+                    @ApiResponse(responseCode = "0", description = "비밀번호 변경 실패"),
+                    @ApiResponse(responseCode = "200", description = "OK"),
+                    @ApiResponse(responseCode = "404", description = "Page Not Found!"),
+            }
+    )
+    @PostMapping("changePwd")
+    public int changePwd(HttpServletRequest request)throws Exception {
+        log.info(getClass().getName()+"changePwd 시작");
+
+        //JWT Access 토큰 가져오기
+        String jwtAccessToken = CmmUtil.nvl(jwtTokenProvider.resolveToken(request, JwtTokenType.ACCESS_TOKEN));
+        log.info("jwtAccessToken : " + jwtAccessToken);
+
+        TokenDTO dto = Optional.ofNullable(jwtTokenProvider.getTokenInfo(jwtAccessToken))
+                .orElseGet(() -> TokenDTO.builder().build());
+
+        log.info("TokenDTO : " + dto);
+
+
+
+        String pwd = CmmUtil.nvl(CmmUtil.nvl(request.getParameter("pwd")));
+        String userId = dto.userId();
+
+        log.info("바뀌는 비밀번호 :"+pwd);
+        log.info("사용자 id :" + userId);
+
+        pwd = bCryptPasswordEncoder.encode(pwd);
+        UserInfoDTO pDTO = UserInfoDTO.builder()
+                .userId(userId)
+                .password(pwd)
+                .build();
+
+        int res = userInfoService.changePwd(pDTO);
+
+        log.info(getClass().getName()+"changePwd 종ㄹ");
+        return  res;
+    }
+
+
+    @Operation(summary = "회원 탈퇴 API", description = "회원 탈퇴",
+            responses = {
+                    @ApiResponse(responseCode = "1", description = "회원 탈퇴 성공"),
+                    @ApiResponse(responseCode = "0", description = "회원 탈퇴 실패"),
+                    @ApiResponse(responseCode = "200", description = "OK"),
+                    @ApiResponse(responseCode = "404", description = "Page Not Found!"),
+            }
+    )
     @PostMapping(value = "userDelete")
     public int userDelete(HttpServletRequest request) throws Exception {
         log.info(getClass().getName() + "userDelete 시작");

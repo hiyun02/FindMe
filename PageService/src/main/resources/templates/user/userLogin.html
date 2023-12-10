@@ -82,8 +82,25 @@
 					console.log("json.result : " + json.result);
 
 					if (json.result === 1) { // 로그인 성공
-						// swal(title = "로그인 성공", msg = json.msg ,state="success");
-						location.href = "/exception/main";
+
+						swal({
+							title: "로그인 성공",
+							text: "로그인 성공",
+							icon: "success",
+							buttons: {
+								confirm: {
+									text: "확인",
+									value: true,
+								},
+							},
+						}).then((value) => {
+							if (value) {
+								location.href = "/exception/main";
+							}
+						});
+
+
+
 
 					} else { // 로그인 실패
 						swal(title = "로그인 실패", msg = json.msg ,state="error");
