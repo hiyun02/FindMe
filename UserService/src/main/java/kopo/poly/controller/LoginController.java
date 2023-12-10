@@ -44,6 +44,10 @@ public class LoginController {
     @Value("${jwt.token.refresh.name}")
     private String refreshTokenName;
 
+    @Value("${server.domain}")
+    private String domain;
+
+
     private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "로그인 성공처리 API", description = "로그인 성공처리 API"
@@ -52,16 +56,14 @@ public class LoginController {
             @ApiResponse(responseCode = "404", description = "Page Not Found"),
     })
     @PostMapping(value = "loginSuccess")
-    public MsgDTO loginSuccess(
-            @AuthenticationPrincipal AuthInfo authInfo,
-            // 인증된 사용자의 세부 정보를 담고 있는 객체를 전달받음
-            HttpServletResponse response
-            // 클라이언트로부터 요청을 받은 후, 서버 response 객체를 사용해 응답을 생성하여 클라이언트에게 전송
-    ) {
+    public MsgDTO loginSuccess(@AuthenticationPrincipal AuthInfo authInfo,
+                               // 인증된 사용자의 세부 정보를 담고 있는 객체를 전달받음
+                               HttpServletResponse response) {
+        // 클라이언트로부터 요청을 받은 후, 서버 response 객체를 사용해 응답을 생성하여 클라이언트에게 전송
 
-        log.info(getClass().getName() + "loginSuccess start");
+        log.info(this.getClass().getName() + ".loginSuccess Start!");
 
-        // authInfo 에 저장된 정보 가져오기
+        // Spring Security에 저장된 정보 가져오기
         UserInfoDTO rDTO = Optional.ofNullable(authInfo.userInfoDTO())
                 .orElseGet(() -> UserInfoDTO.builder().build());
 
@@ -73,21 +75,26 @@ public class LoginController {
         log.info("userName : " + userName);
         log.info("userRoles : " + userRoles);
 
-        //Access Token 생성
+        // Access Token 생성
         String accessToken = jwtTokenProvider.createToken(userId, userRoles, JwtTokenType.ACCESS_TOKEN);
-        log.info("accessToken " + accessToken);
+        log.info("accessToken : " + accessToken);
+
 
         ResponseCookie cookie = ResponseCookie.from(accessTokenName, accessToken)
-                .domain("localhost")
+                .domain(domain)
                 .path("/")
-                .maxAge(accessTokenValidTime)
+//                .secure(true)
+//                .sameSite("None")
+                .maxAge(accessTokenValidTime) // JWT Refresh Token 만료시간 설정
                 .httpOnly(true)
                 .build();
 
+        // 기존 쿠기 모두 삭제하고, Cookie에 Access Token 저장하기
         response.setHeader("Set-Cookie", cookie.toString());
 
+        cookie = null;
 
-        /*
+       /*
             Refresh Token 생성
             Refresh Token 은 보안 상 노출되면, 위험하기에 DB에 저장하고 DB 조회용으로만 사용
             Refresh Token 은 Access Token에 비해 만료시간을 길게 설정함
@@ -96,27 +103,31 @@ public class LoginController {
         // Refresh Token 생성
         String refreshToken = jwtTokenProvider.createToken(userId, userRoles, JwtTokenType.REFRESH_TOKEN);
 
-        log.info("refresh Token :" + refreshToken);
+        log.info("refreshToken : " + refreshToken);
 
         cookie = ResponseCookie.from(refreshTokenName, refreshToken)
-                .domain("localhost")
-//                .path("/")
+                .domain(domain)
+                .path("/")
 //                .secure(true)
-                .sameSite("None")
-                .maxAge(refreshTokenValidTime)
+//                .sameSite("None")
+                .maxAge(refreshTokenValidTime) // JWT Refresh Token 만료시간 설정
                 .httpOnly(true)
                 .build();
 
+//         기존 쿠기에 Refresh Token 저장하기
         response.addHeader("Set-Cookie", cookie.toString());
 
+        // 결과 메시지 전달하기
+        MsgDTO dto = MsgDTO.builder().result(1).msg(userName + "님 로그인이 성공하였습니다.").build();
 
-
-        MsgDTO dto = MsgDTO.builder().result(1).msg(userName+"님 로그인이 성공하였습니다").build();
-
-        log.info(getClass().getName() + "loginSuccess end");
+        log.info(this.getClass().getName() + ".loginSuccess End!");
 
         return dto;
+
     }
+
+
+
 
     @Operation(summary = "로그인 실패처리  API", description = "로그인 실패처리 API",
             responses = {

@@ -1,7 +1,7 @@
 // API 서버 정보 기입
 const protocol = "http://";
 const apiServer = "localhost:13000";
-const loginPage = "/ss/login.html";
+const loginPage = "/user/login";
 const jwtTokenName = "jwtAccessToken";
 
 function loginCheck() {

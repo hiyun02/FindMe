@@ -127,7 +127,7 @@ public class MailService implements IMailService {
                         .userDate(rEntity.get().getUserDate())
                         .addr1(rEntity.get().getAddr1())
                         .addr2(rEntity.get().getAddr2())
-                        .userAlarm(rEntity.get().getUserAlarm())
+//                        .userAlarm(rEntity.get().getUserAlarm())
                         .roles(rEntity.get().getRoles())
                         .build();
 

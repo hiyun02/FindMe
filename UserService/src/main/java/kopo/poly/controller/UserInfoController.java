@@ -10,9 +10,11 @@ import kopo.poly.dto.TokenDTO;
 import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.service.IUserInfoService;
 import kopo.poly.util.CmmUtil;
+import kopo.poly.util.EncryptUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.weaver.IClassFileProvider;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +40,8 @@ public class UserInfoController {
 
     // 회원 서비스
     private final IUserInfoService userInfoService;
+
+
 
     /**
      * JWT Access Token으로부터 user_id 가져오기
@@ -104,6 +108,41 @@ public class UserInfoController {
     }
 
     /**
+     *  유저 비밀번호 체크
+     * @param request
+     * @return 성공여부 (성공 1, 실패 0)
+     * @throws Exception
+     */
+    @Operation(summary = "유저 비밀번호 체크  API", description = "유저 비밀번호 체크 I",
+            responses = {
+                    @ApiResponse(responseCode = "1", description = "비밀번호 일치"),
+                    @ApiResponse(responseCode = "0", description = "일치하지 않음"),
+                    @ApiResponse(responseCode = "200", description = "OK"),
+                    @ApiResponse(responseCode = "404", description = "Page Not Found!"),
+            }
+    )
+    @PostMapping("passWordCheck")
+    public int  passWordCheck(HttpServletRequest request) throws Exception {
+        log.info("비밀번호 확인 시작");
+
+        String passWord = CmmUtil.nvl(request.getParameter("passWord"));
+
+        String userId = CmmUtil.nvl(this.getTokenInfo(request).userId());
+
+        log.info("해당 유저의 id : " + userId);
+
+        UserInfoDTO pDTO = UserInfoDTO.builder().userId(userId).password(passWord).build();
+
+        int res = 0;
+
+        // 비밀번호 확인
+        res = userInfoService.passWordCheck(pDTO);
+
+        return res;
+    }
+
+
+    /**
      * 유저 정보 수정  API
      *
      * @param request (필수 없음, 변경하는 필드만 가져오면 됨)
@@ -136,11 +175,11 @@ public class UserInfoController {
         UserInfoDTO pDTO = UserInfoDTO.builder()
                 .userId(userId)
                 .password(password)
-                .email(email)
+                .email(EncryptUtil.encAES128CBC(email))
                 .userName(userName)
                 .addr1(addr1)
                 .addr2(addr2)
-                .userAlarm(userAlarm)
+//                .userAlarm(userAlarm)
                 .build();
 
         res = userInfoService.userUpdate(pDTO);
@@ -157,8 +196,8 @@ public class UserInfoController {
     }
 
     @PostMapping(value = "userDelete")
-    public int userDelete(HttpServletRequest request)throws Exception {
-        log.info(getClass().getName()+"userDelete 시작");
+    public int userDelete(HttpServletRequest request) throws Exception {
+        log.info(getClass().getName() + "userDelete 시작");
 
         int res = 0;
         // Access Token에 저장된 회원아이디 가져오기
@@ -166,7 +205,7 @@ public class UserInfoController {
 
         res = userInfoService.userDelete(userId);
 
-        log.info(getClass().getName()+"userDelete 종료");
+        log.info(getClass().getName() + "userDelete 종료");
 
         return res;
     }

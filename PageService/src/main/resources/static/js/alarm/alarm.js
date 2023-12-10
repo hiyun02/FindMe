@@ -42,9 +42,10 @@ function alarmList() {
             }
 
         },
-        // error: function (request, status, error) {
         // error: function () {
         //     alert("접근 권한이 없습니다.");
+        //    // swal(title = "접근 권한 " , msg ="접근 권한이 없습니다.", state ="error");
+        //
         //     location.href = loginPage;
         //
         // }

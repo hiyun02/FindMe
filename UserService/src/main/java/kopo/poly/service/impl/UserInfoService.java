@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,9 @@ import java.util.Optional;
 public class UserInfoService implements IUserInfoService {
 
     private final UserInfoRepository userInfoRepository;
+
+
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     /**
      * 로그인 처리를 하기 위해 실행하는 함수로 인증 기능을 사용하기 위해서 필수적으로 생성해야됨
@@ -59,7 +63,7 @@ public class UserInfoService implements IUserInfoService {
         String userName = CmmUtil.nvl(pDTO.userName()); // 이름
         String addr1 = CmmUtil.nvl(pDTO.addr1()); // 주소
         String addr2 = CmmUtil.nvl(pDTO.addr2()); // 상세주소
-        String userAlarm = CmmUtil.nvl(pDTO.userAlarm()); //알림 여부
+//        String userAlarm = CmmUtil.nvl(pDTO.userAlarm()); //알림 여부
         String roles = CmmUtil.nvl(pDTO.roles()); // 권한
 
         log.info("회원아이디 : " + userId);
@@ -68,7 +72,7 @@ public class UserInfoService implements IUserInfoService {
         log.info("이름 : " + userName);
         log.info("주소 : " + addr1);
         log.info("상세주소 : " + addr2);
-        log.info("알림 여부 : " + userAlarm);
+//        log.info("알림 여부 : " + userAlarm);
         log.info("roles : " + roles);
 
         // 회원 가입 중복 방지를 위해 DB에서 데이터 조회
@@ -89,7 +93,7 @@ public class UserInfoService implements IUserInfoService {
                     .userDate(DateUtil.getDateTime("yyyy-MM-dd hh:mm"))
                     .addr1(addr1)
                     .addr2(addr2)
-                    .userAlarm(userAlarm)
+//                    .userAlarm(userAlarm)
                     .roles(roles)
                     .build();
 
@@ -149,6 +153,7 @@ public class UserInfoService implements IUserInfoService {
 
     /**
      * 유저 아이디 중복 체크
+     *
      * @param userId 유저 아이디
      * @return 결과값 (Id가 존재하면 1 아니면 0)
      * @throws Exception
@@ -161,7 +166,6 @@ public class UserInfoService implements IUserInfoService {
         int res = 0;
 
         Optional<UserInfoEntity> rEntity = userInfoRepository.findById(userId);
-
 
 
         if (rEntity.isPresent()) res = 1;
@@ -212,7 +216,7 @@ public class UserInfoService implements IUserInfoService {
                 .userDate(rEntity.getUserDate())
                 .addr1(Optional.ofNullable(pDTO.addr1()).filter(n -> !n.isEmpty()).orElse(rEntity.getAddr1()))
                 .addr2(Optional.ofNullable(pDTO.addr2()).filter(n -> !n.isEmpty()).orElse(rEntity.getAddr2()))
-                .userAlarm(Optional.ofNullable(pDTO.userAlarm()).filter(n -> !n.isEmpty()).orElse(rEntity.getUserAlarm()))
+//                .userAlarm(Optional.ofNullable(pDTO.userAlarm()).filter(n -> !n.isEmpty()).orElse(rEntity.getUserAlarm()))
                 .roles(Optional.ofNullable(pDTO.roles()).filter(n -> !n.isEmpty()).orElse(rEntity.getRoles()))
                 .build();
 
@@ -229,7 +233,7 @@ public class UserInfoService implements IUserInfoService {
     @Override
     @Transactional
     public int userDelete(String userId) throws Exception {
-        log.info(getClass().getName()+"userDelete 시작");
+        log.info(getClass().getName() + "userDelete 시작");
 
         int res = 0;
 
@@ -240,7 +244,37 @@ public class UserInfoService implements IUserInfoService {
 
         res = 1;
 
-        log.info(getClass().getName()+"userDelete 종료");
+        log.info(getClass().getName() + "userDelete 종료");
+
+        return res;
+    }
+
+    @Override
+    public int passWordCheck(UserInfoDTO pDTO) throws Exception {
+
+        int res = 0;
+
+
+        String user_id = CmmUtil.nvl(pDTO.userId());
+
+        log.info("user_id : " + user_id);
+
+        Optional<UserInfoEntity> rEntity = userInfoRepository.findByUserId(user_id);
+
+
+        if (rEntity.isPresent()) {
+
+            log.info("성공 1");
+
+            log.info(rEntity.get().getPassword());
+            log.info(bCryptPasswordEncoder.encode(pDTO.password()));
+
+            if (rEntity.get().getPassword().equals(bCryptPasswordEncoder.encode(pDTO.password()))) {
+                log.info("성공 2");
+                res = 1;
+            }
+
+        }
 
         return res;
     }

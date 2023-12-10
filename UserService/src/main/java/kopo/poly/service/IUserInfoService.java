@@ -22,4 +22,7 @@ public interface IUserInfoService extends UserDetailsService {
 
     // 유저 정보 삭제
     int userDelete(String userId)throws Exception;
+
+    //비밀번호 확인
+    int passWordCheck(UserInfoDTO pDTO)throws Exception;
 }

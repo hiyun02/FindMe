@@ -64,7 +64,7 @@ public class UserRegController {
             String userName = CmmUtil.nvl(request.getParameter("userName")); //이름
             String addr1 = CmmUtil.nvl(request.getParameter("addr1")); //주소
             String addr2 = CmmUtil.nvl(request.getParameter("addr2")); //상세주소
-            String userAlarm = CmmUtil.nvl(request.getParameter("userAlarm")); // 알람 여부
+//            String userAlarm = CmmUtil.nvl(request.getParameter("userAlarm")); // 알람 여부
 
             log.info("회원아이디 : " + userId);
             log.info("비밀번호 : " + password);
@@ -72,7 +72,7 @@ public class UserRegController {
             log.info("이름 : " + userName);
             log.info("주소 : " + addr1);
             log.info("상세주소 : " + addr2);
-            log.info("알림 여부 : " + userAlarm);
+//            log.info("알림 여부 : " + userAlarm);
 
 
 
@@ -83,7 +83,7 @@ public class UserRegController {
                     .email(EncryptUtil.encAES128CBC(email))
                     .userName(userName)
                     .addr1(addr1).addr2(addr2)
-                    .userAlarm(userAlarm)
+//                    .userAlarm(userAlarm)
                     .roles(UserRole.USER.getValue())
                     .build();
 

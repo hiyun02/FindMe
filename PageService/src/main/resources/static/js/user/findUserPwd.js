@@ -118,3 +118,23 @@ function updatePw() {
 
 
 }
+
+
+
+/**
+ * 이메일 확인
+ */
+
+$("#codeCheckBtn").click(function (){
+    // console.log("입력한 이메일 코드" + $("#emailCode").val());
+    // console.log("wzip에서 발송한 이메일 코드 " + randomCode);
+
+    if ($("#emailAuth").val() === randomCode){
+        emailCheck = true;
+        swal(title = "인증 완료" , msg ="인증되었습니다. 계속 진행해주세요.", state ="success");
+
+    }else {
+        swal(title = "인증 실패" , msg ="인증번호를 다시한번 확인해주세요.", state ="error");
+
+    };
+});

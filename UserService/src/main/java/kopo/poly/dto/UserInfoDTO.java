@@ -11,7 +11,7 @@ public record UserInfoDTO (
         String userDate,//가입일
         String addr1, // 주소
         String addr2, // 상세주소
-        String userAlarm,// 알림 여부
+//        String userAlarm,// 알림 여부
         String roles //권한
 ){
 }
