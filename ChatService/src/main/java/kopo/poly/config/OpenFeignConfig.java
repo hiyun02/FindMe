@@ -1,11 +1,14 @@
 package kopo.poly.config;
 
 import feign.Logger;
+import feign.Logger.Level;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenFeignConfig {
+    public OpenFeignConfig() {
+    }
 
     @Bean
     Logger.Level feignLoggerLevel() {
@@ -20,6 +23,4 @@ public class OpenFeignConfig {
          */
         return Logger.Level.FULL;
     }
-
-
 }
