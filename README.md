@@ -20,11 +20,15 @@
 ● Spring Boot와 Embedded WAS: 마이크로 서비스는 Spring Boot와 내장된 웹 애플리케이션 서버(Embedded WAS)를 사용하여 별도의 설정 없이 바로 실행 가능  
  <br>
 ● 데이터베이스 활용: 얼굴 분석 정보와 실종자 및 회원 정보는 MySQL 데이터베이스에 저장 및 관리되며, 채팅 기능을 위해서는 RedisDB 사용 
-
+<br>
+<br>
+<h2>개발 환경 </h2>
+![image](https://github.com/wonjibkim/Exception/assets/101384372/13471615-c83a-4349-8179-25ad88c86877)
 
 <br>
 <br>
 <h2>시연 동영상 유튜브 링크 </h2>
 https://www.youtube.com/watch?v=K1rNKIbVjp4
+
 
 
