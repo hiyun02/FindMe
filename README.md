@@ -23,8 +23,7 @@
 <br>
 <br>
 <h2>개발 환경 </h2>
-![image](https://github.com/wonjibkim/Exception/assets/101384372/13471615-c83a-4349-8179-25ad88c86877)
-
+<img width="100%" src="https://github.com/wonjibkim/Exception/assets/101384372/13471615-c83a-4349-8179-25ad88c86877"/>
 <br>
 <br>
 <h2>시연 동영상 유튜브 링크 </h2>
