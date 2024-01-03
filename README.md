@@ -5,7 +5,7 @@
 <img width="80%" src="https://github.com/wonjibkim/Exception/assets/101384372/30e3ca1c-e4cf-4584-a7e0-2dd065bec984"/>
 
 <h2>시연 동영상</h2>
-[![Watch the video](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=K1rNKIbVjp4)
 
+[![Watch the video](https://img.youtube.com/vi/K1rNKIbVjp4/0.jpg)](https://www.youtube.com/watch?v=K1rNKIbVjp4)
 
 
