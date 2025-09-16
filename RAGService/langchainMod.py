@@ -1,0 +1,91 @@
+# .env 파일의 API KEY를 사용하기 위한 패키지 로드
+from dotenv import load_dotenv
+
+# .env 파일의 변수 불러오는 함수 실행
+load_dotenv()
+# langchain 제공 loader 중 pyPDFLoader 로드
+from langchain.document_loaders import TextLoader
+# langchain 제공 splitter 중 RecursiveCharacterTextSplitter 로드
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+# langchain 제공 vectorDB 중 오픈소스인 ChromaDB 로드
+from langchain.vectorstores import Chroma
+# langchain 제공 embedding 객체 중 OpenAI의 Embedding 모듈 로드
+from langchain.embeddings import OpenAIEmbeddings
+# langchain 제공하는 ChatGPT의 채팅모드 패키지 로드
+from langchain.chat_models import ChatOpenAI
+# langchain 제공하는 검색과 응답을 처리하는 패키지 RetrievalQA 로드
+from langchain.chains import RetrievalQA
+
+
+def insertInfo(info):
+    with open("missingData.txt", "a", encoding="UTF-8") as file:
+        file.write(info + "\n")
+
+    return 1
+
+
+# 실종자 등록될 때마다 실종 정보를 LangChain을 통해 벡터화하여 저장
+def insertMissingData(missing_docs):
+    text_splitter = RecursiveCharacterTextSplitter(
+        # Set a really small chunk size, just to show.
+        chunk_size=50,
+        chunk_overlap=20,
+        length_function=len,
+        is_separator_regex=False,
+    )
+    # 스플리터의 지정 옵션을 반영하여 분할
+    texts = text_splitter.split_documents(missing_docs)
+
+    # Embedding - , API-KEY를 통해 OpenAI 제공 임베딩 모델 로드, 비용 발생
+    embeddings_model = OpenAIEmbeddings()
+
+    # ChromaDB에 Split된 데이터 texts를 OpenAI Embedding 모델로 벡터화하여 파일 시스템에 저장함
+    db = Chroma.from_documents(texts, embeddings_model, persist_directory="./chroma")
+
+    return 1
+
+
+# 사전에 저장된 실종 정보를 바탕으로 질의가 들어왔을 때 유사한 실종자 데이터를 탐색 후 결과 반환
+def queryResult(query):
+    # Embedding - , API-KEY를 통해 OpenAI 제공 임베딩 모델 로드, 비용 발생
+    embeddings_function = OpenAIEmbeddings()
+    # 실종자 데이터를 담고 있는 ChromaDB 정보를 파일 시스템으로 부터 불러옴, 임베딩 방식을 지정함
+    db = Chroma(persist_directory="./chroma", embedding_function=embeddings_function)
+    # ChatGPT 대화 모듈 로드 temperature 값이 1에 가까울 수록 창의적인 답변 제공
+    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+    # db에 요청으로 들어온 질의를 던져 질의와 유사한 문서를 가져오고 응답을 반환할 RetrievalQA 객체 할당.
+    qa_chain = RetrievalQA.from_chain_type(llm, retriever=db.as_retriever())
+    # RetrievalQA에게 질의를 넘김으로서 결과값 반환
+    result = qa_chain({"query": query})
+    return result
+
+# 사전에 저장된 실종 정보를 바탕으로 질의가 들어왔을 때 유사한 실종자 데이터를 탐색 후 결과 반환
+def queryResultByRetrive(query):
+    print("query : " + query)
+
+    # Embedding - , API-KEY를 통해 OpenAI 제공 임베딩 모델 로드, 비용 발생
+    embeddings_function = OpenAIEmbeddings()
+
+    # 실종자 데이터를 담고 있는 ChromaDB 정보를 파일 시스템으로 부터 불러옴, 임베딩 방식을 지정함
+    db = Chroma(persist_directory="./chroma", embedding_function=embeddings_function)
+
+    # ChatGPT 대화 모듈 로드 temperature 값이 1에 가까울 수록 창의적인 답변 제공
+    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+
+    # db에 질의에 대한 응답을 가져올 MultiQueryRetriever 객체 할당.
+    retriver_from_llm = MultiQueryRetriever.from_llm(
+        retriever=db.as_retriever(), llm=llm
+    )
+
+    # MultiQueryRetriever 객체를 통해, 질문과 연관있는 문서를 db로부터 가져와서 변수 docs에 저장함
+    docs = retriver_from_llm.get_relevant_documents(query=question)
+    print(len(docs))  # 질문과 연관성 높은 문서의 개수 출력
+
+    result = []
+    # 해당 문서 전체 출력 및 저장
+    for i, doc in enumerate(docs):
+        dict = {str(i) : doc}
+        result[i].append(dict)
+    print(result)
+
+    return result
